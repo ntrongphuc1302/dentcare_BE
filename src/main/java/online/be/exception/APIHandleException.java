@@ -13,7 +13,7 @@ public class APIHandleException {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Object> handleInvalidUsernamePassword(BadCredentialsException ex) {
-        return new ResponseEntity<>("UserName or password not correct!!!", HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>("Username or password not correct!!!", HttpStatus.FORBIDDEN);
     }
 
     @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
