@@ -51,6 +51,7 @@ public class AuthenticationService implements UserDetailsService {
         try {
             EmailDetail emailDetail = new EmailDetail();
             emailDetail.setRecipient(account.getEmail());
+            emailDetail.setFullName(account.getFullName());
             emailDetail.setSubject("You are invited to system!");
             emailDetail.setMsgBody("aaa");
             emailDetail.setButtonValue("Login to system");
@@ -81,6 +82,7 @@ public class AuthenticationService implements UserDetailsService {
         accountResponse.setEmail(account.getEmail());
         accountResponse.setFullName(account.getFullName());
         accountResponse.setRole(account.getRole());
+        accountResponse.setId(account.getId());
 
         return accountResponse;
     }
