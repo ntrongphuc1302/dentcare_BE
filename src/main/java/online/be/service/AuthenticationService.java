@@ -4,6 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import online.be.entity.Account;
+import online.be.enums.Role;
 import online.be.exception.BadRequestException;
 import online.be.model.*;
 import online.be.repository.AuthenticationRepository;
@@ -47,7 +48,7 @@ public class AuthenticationService implements UserDetailsService {
 
         account.setPhone(registerRequest.getPhone());
         account.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
-        account.setRole(registerRequest.getRole());
+        account.setRole(Role.CUSTOMER);
         account.setEmail(registerRequest.getEmail());
         account.setFullName(registerRequest.getFullName());
 
@@ -78,6 +79,7 @@ public class AuthenticationService implements UserDetailsService {
             if(account == null){
                 account.setFullName(firebaseToken.getName());
                 account.setEmail(firebaseToken.getEmail());
+                account.setRole(Role.CUSTOMER);
                 account = authenticationRepository.save(account);
             }
             accountResponse.setFullName(account.getFullName());
