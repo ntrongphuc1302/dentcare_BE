@@ -2,7 +2,8 @@ package online.be.api;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.be.entity.Account;
-import online.be.model.*;
+import online.be.model.request.*;
+import online.be.model.response.AccountResponse;
 import online.be.service.AuthenticationService;
 import online.be.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;

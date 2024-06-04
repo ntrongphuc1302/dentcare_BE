@@ -1,4 +1,4 @@
-package online.be.model;
+package online.be.model.request;
 
 import lombok.Getter;
 import lombok.Setter;

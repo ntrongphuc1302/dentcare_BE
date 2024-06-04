@@ -1,4 +1,4 @@
-package online.be.model;
+package online.be.model.response;
 
 import lombok.Data;
 import online.be.entity.Account;
