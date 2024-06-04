@@ -47,6 +47,12 @@ public class AuthenticationAPI {
         return ResponseEntity.ok(account);
     }
 
+    @PostMapping("login-google")
+    public ResponseEntity<AccountResponse> loginGoogle(@RequestBody LoginGoogleRequest loginGoogleRequest){
+        return ResponseEntity.ok(authenticationService.loginGoogle(loginGoogleRequest));
+    }
+
+
     @PostMapping("forgot-password")
     public void forgotPassword(@RequestBody ForgotPasswordRequest forgotPasswordRequest) {
         authenticationService.forgotPasswordRequest(forgotPasswordRequest.getEmail());

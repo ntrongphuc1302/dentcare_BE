@@ -1,5 +1,8 @@
 package online.be.service;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.FirebaseToken;
 import online.be.entity.Account;
 import online.be.exception.BadRequestException;
 import online.be.model.*;
@@ -64,6 +67,31 @@ public class AuthenticationService implements UserDetailsService {
 
         // nhờ repo => save xuống db
         return authenticationRepository.save(account);
+    }
+
+    public AccountResponse loginGoogle(LoginGoogleRequest loginGoogleRequest){
+        AccountResponse accountResponse = new AccountResponse();
+        try{
+            FirebaseToken firebaseToken = FirebaseAuth.getInstance().verifyIdToken(loginGoogleRequest.getToken());
+            String email = firebaseToken.getEmail();
+            Account account = authenticationRepository.findAccountByEmail(email);
+            if(account == null){
+                account.setFullName(firebaseToken.getName());
+                account.setEmail(firebaseToken.getEmail());
+                account = authenticationRepository.save(account);
+            }
+            accountResponse.setFullName(account.getFullName());
+            accountResponse.setEmail(account.getEmail());
+            accountResponse.setRole(account.getRole());
+            accountResponse.setId(account.getId());
+            accountResponse.setPhone(account.getPhone());
+            accountResponse.setToken(tokenService.generateToken(account));
+            return accountResponse;
+
+        }catch (FirebaseAuthException e){
+            e.printStackTrace();
+        }
+        return accountResponse;
     }
 
     public AccountResponse login(LoginRequest loginRequest) {
