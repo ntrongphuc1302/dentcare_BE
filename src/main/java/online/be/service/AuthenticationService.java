@@ -1,9 +1,9 @@
 package online.be.service;
 
 import online.be.entity.Account;
+import online.be.exception.BadRequestException;
 import online.be.model.*;
 import online.be.repository.AuthenticationRepository;
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -99,6 +99,7 @@ public class AuthenticationService implements UserDetailsService {
 
         EmailDetail emailDetail = new EmailDetail();
         emailDetail.setRecipient(account.getEmail());
+        emailDetail.setFullName(account.getFullName());
         emailDetail.setSubject("Reset password for account " + account.getEmail() + "!");
         emailDetail.setMsgBody("aaa");
         emailDetail.setButtonValue("Reset Password");
