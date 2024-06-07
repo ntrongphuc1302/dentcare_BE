@@ -82,6 +82,7 @@ public class AuthenticationService implements UserDetailsService {
             String email = firebaseToken.getEmail();
             Account account = authenticationRepository.findAccountByEmail(email);
             if(account == null){
+                account = new Account();
                 account.setFullName(firebaseToken.getName());
                 account.setEmail(firebaseToken.getEmail());
                 account.setRole(Role.CUSTOMER);
