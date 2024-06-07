@@ -1,34 +1,19 @@
-package online.be.entity;
+package online.be.model.request;
 
-import jakarta.mail.Address;
-import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import online.be.enums.ClinicEnum;
 
-@Entity
 @Getter
 @Setter
-@ToString
-public class DentalClinic {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ClinicByManagerRequest {
     long id;
-
     String clinicName;
-
-    @Column(unique = true)
     String address;
-
     String openHours;
-
     String closeHours;
-
     @Enumerated(EnumType.STRING)
     ClinicEnum clinicEnum;
-
-
-
 }
