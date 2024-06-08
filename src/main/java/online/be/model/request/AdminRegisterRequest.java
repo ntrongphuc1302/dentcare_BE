@@ -13,4 +13,5 @@ public class AdminRegisterRequest {
     String email;
     @Enumerated(EnumType.STRING)
     Role role;
+    long clinicId;
 }
