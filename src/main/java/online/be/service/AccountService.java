@@ -19,6 +19,8 @@ public class AccountService {
         return accountRepository.findAccountsByRoleAndDentalClinicId(role, id);
     }
 
+
+
     public Account getAccountById(long id) {
         try {
             return accountRepository.findById(id);

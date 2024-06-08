@@ -39,9 +39,9 @@ public class Account implements UserDetails {
     @Enumerated(EnumType.STRING)
     Role role;
 
-    String qualification;
-
-    String specialization;
+//    String qualification; +1 việc
+//
+//    String specialization;
 
     @JsonIgnore
     @ManyToOne
