@@ -4,12 +4,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import online.be.entity.Account;
+import online.be.entity.DentalClinic;
 import online.be.enums.Role;
 import online.be.exception.BadRequestException;
+import online.be.exception.NotFoundException;
 import online.be.model.*;
 import online.be.model.request.*;
 import online.be.model.response.AccountResponse;
 import online.be.repository.AuthenticationRepository;
+import online.be.repository.ClinicRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -31,6 +34,9 @@ public class AuthenticationService implements UserDetailsService {
     // xử lý logic
     @Autowired
     AuthenticationRepository authenticationRepository;
+
+    @Autowired
+    ClinicRepository clinicRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -83,6 +89,11 @@ public class AuthenticationService implements UserDetailsService {
         account.setRole(adminRegisterRequest.getRole());
         account.setEmail(adminRegisterRequest.getEmail());
         account.setFullName(adminRegisterRequest.getFullName());
+        // Gán Clinic ID cho tài khoản từ yêu cầu đăng ký
+        var clinic = clinicRepository.findById(adminRegisterRequest.getClinicId())
+                .orElseThrow(() -> new NotFoundException("Cannot find this clinicId"));
+
+        account.setDentalClinic(clinic);
 
         try {
             EmailDetail emailDetail = new EmailDetail();
