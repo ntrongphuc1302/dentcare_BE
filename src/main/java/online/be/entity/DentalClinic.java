@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 import online.be.enums.ClinicEnum;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -29,6 +31,6 @@ public class DentalClinic {
     @Enumerated(EnumType.STRING)
     ClinicEnum clinicEnum;
 
-
-
+    @OneToMany(mappedBy = "dentalClinic")
+    private List<Account> accounts;
 }
