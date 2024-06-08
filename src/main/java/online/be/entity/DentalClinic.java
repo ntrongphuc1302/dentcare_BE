@@ -33,8 +33,4 @@ public class DentalClinic {
 
     @OneToMany(mappedBy = "dentalClinic")
     private List<Account> accounts;
-
-    public DentalClinic orElseThrow(Object o) {
-        return null;
-    }
 }

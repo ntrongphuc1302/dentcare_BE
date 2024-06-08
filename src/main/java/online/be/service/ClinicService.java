@@ -23,7 +23,8 @@ public class ClinicService {
     }
 
     public DentalClinic getClinicById(Long id) {
-        return clinicRepository.findById(id).orElseThrow(() -> new NotFoundException("Clinic not found with id " + id));
+        return clinicRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("Clinic not found with id " + id));
     }
 
     public DentalClinic createClinic(ClinicRequest clinicRequest) {
