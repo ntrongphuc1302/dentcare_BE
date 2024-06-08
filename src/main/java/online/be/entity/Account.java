@@ -1,5 +1,6 @@
 package online.be.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -42,6 +43,7 @@ public class Account implements UserDetails {
 
     String specialization;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "dental_clinic_id")
     private DentalClinic dentalClinic;

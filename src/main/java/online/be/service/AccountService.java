@@ -10,20 +10,22 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DentistService {
+public class AccountService {
 
     @Autowired
     private AccountRepository accountRepository;
 
-    public List<Account> getAllDentist() {
-        return accountRepository.findAllByRole(Role.DENTIST);
+    public List<Account> getAccountByRoleAndClinic(Role role, long id) {
+        return accountRepository.findAccountsByRoleAndDentalClinicId(role, id);
     }
 
-    public Account getDentistById(long id) {
-        if(accountRepository.findById(id).getRole() == Role.DENTIST) {
+    public Account getAccountById(long id) {
+        try {
             return accountRepository.findById(id);
-        } else {
-            throw new NotFoundException("Dentist not found with id " + id);
+        } catch (Exception e) {
+            throw new NotFoundException("Account not found with id " + id);
         }
     }
+
+
 }
