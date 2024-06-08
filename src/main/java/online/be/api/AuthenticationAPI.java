@@ -42,7 +42,7 @@ public class AuthenticationAPI {
         return ResponseEntity.ok(account);
     }
 
-    @PostMapping("registerByAdmin") // /api/register
+    @PostMapping("register-by-admin") // /api/register
     public ResponseEntity register(@RequestBody AdminRegisterRequest adminRegisterRequest) {
         // account đã add xuống db
         Account account = authenticationService.registerAdmin(adminRegisterRequest);
