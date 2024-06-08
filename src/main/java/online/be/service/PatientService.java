@@ -6,6 +6,7 @@ import online.be.enums.PatientEnum;
 import online.be.exception.DuplicateException;
 import online.be.exception.NotFoundException;
 import online.be.model.request.PatientRequest;
+import online.be.model.request.PatientUpdateRequest;
 import online.be.repository.AuthenticationRepository;
 import online.be.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +23,16 @@ public class PatientService {
     @Autowired
     AuthenticationRepository authenticationRepository;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     public List<Patient> getAllPatients() {
         return patientRepository.findAllByPatientEnum(PatientEnum.ACTIVE);
     }
 
     public Patient createPatient(PatientRequest patientRequest) {
-        Account account = authenticationRepository.findById(patientRequest.getAccountId()).get();
+//        Account account = authenticationRepository.findById(patientRequest.getAccountId()).get();
+        Account account = authenticationService.getCurrentAccount();
         Patient patient = new Patient();
         patient.setName(patientRequest.getName());
         patient.setAge(patientRequest.getAge());
@@ -45,18 +50,18 @@ public class PatientService {
         }
     }
 
-    public Patient updatePatient(PatientRequest patientRequest) {
-        Patient patient = patientRepository.findById(patientRequest.getId());
+    public Patient updatePatient(PatientUpdateRequest patientUpdateRequest) {
+        Patient patient = patientRepository.findById(patientUpdateRequest.getId());
         if (patient != null) {
-            patient.setName(patientRequest.getName());
-            patient.setAge(patientRequest.getAge());
-            patient.setGender(patientRequest.getGender());
-            patient.setAddress(patientRequest.getAddress());
-            patient.setPhoneNumber(patientRequest.getPhoneNumber());
-            patient.setEmail(patientRequest.getEmail());
+            patient.setName(patientUpdateRequest.getName());
+            patient.setAge(patientUpdateRequest.getAge());
+            patient.setGender(patientUpdateRequest.getGender());
+            patient.setAddress(patientUpdateRequest.getAddress());
+            patient.setPhoneNumber(patientUpdateRequest.getPhoneNumber());
+            patient.setEmail(patientUpdateRequest.getEmail());
             return patientRepository.save(patient);
         } else {
-            throw new NotFoundException("Patient not found with id " + patientRequest.getId());
+            throw new NotFoundException("Patient not found with id " + patientUpdateRequest.getId());
         }
     }
 
