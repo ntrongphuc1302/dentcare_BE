@@ -2,6 +2,7 @@ package online.be.api;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.be.model.request.PatientRequest;
+import online.be.model.request.PatientUpdateRequest;
 import online.be.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,8 @@ public class PatientManagementAPI {
     }
 
     @PutMapping
-    public ResponseEntity updatePatient(@RequestBody PatientRequest patientRequest) {
-        return ResponseEntity.ok(patientService.updatePatient(patientRequest));
+    public ResponseEntity updatePatient(@RequestBody PatientUpdateRequest patientUpdateRequest) {
+        return ResponseEntity.ok(patientService.updatePatient(patientUpdateRequest));
     }
 
     @DeleteMapping("/{id}")

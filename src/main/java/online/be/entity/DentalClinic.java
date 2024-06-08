@@ -1,5 +1,6 @@
 package online.be.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.mail.Address;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -33,4 +34,7 @@ public class DentalClinic {
 
     @OneToMany(mappedBy = "dentalClinic")
     private List<Account> accounts;
+
+    @OneToMany(mappedBy = "clinic")
+    private List<Room> rooms;
 }

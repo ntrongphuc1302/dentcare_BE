@@ -6,7 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 
-public class PatientRequest {
+public class PatientUpdateRequest {
+    long id;
     String name;
     String age;
     Boolean gender;
