@@ -7,10 +7,7 @@ import online.be.entity.Account;
 import online.be.enums.Role;
 import online.be.exception.BadRequestException;
 import online.be.model.*;
-import online.be.model.request.LoginGoogleRequest;
-import online.be.model.request.LoginRequest;
-import online.be.model.request.RegisterRequest;
-import online.be.model.request.ResetPasswordRequest;
+import online.be.model.request.*;
 import online.be.model.response.AccountResponse;
 import online.be.repository.AuthenticationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +53,36 @@ public class AuthenticationService implements UserDetailsService {
         account.setRole(Role.CUSTOMER);
         account.setEmail(registerRequest.getEmail());
         account.setFullName(registerRequest.getFullName());
+
+        try {
+            EmailDetail emailDetail = new EmailDetail();
+            emailDetail.setRecipient(account.getEmail());
+            emailDetail.setFullName(account.getFullName());
+            emailDetail.setSubject("You are invited to system!");
+            emailDetail.setMsgBody("aaa");
+            emailDetail.setButtonValue("Login to system");
+            emailDetail.setLink("http://jewerystorepoppy.online/");
+            emailService.sendMailTemplate(emailDetail);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+        }
+
+        // nhờ repo => save xuống db
+        return authenticationRepository.save(account);
+    }
+
+    public Account registerAdmin(AdminRegisterRequest adminRegisterRequest) {
+        //registerRequest: thông tin ngừoi dùng yêu cầu
+
+        // xử lý logic register
+        Account account = new Account();
+
+        account.setPhone(adminRegisterRequest.getPhone());
+        account.setPassword(passwordEncoder.encode(adminRegisterRequest.getPassword()));
+        account.setRole(adminRegisterRequest.getRole());
+        account.setEmail(adminRegisterRequest.getEmail());
+        account.setFullName(adminRegisterRequest.getFullName());
 
         try {
             EmailDetail emailDetail = new EmailDetail();
