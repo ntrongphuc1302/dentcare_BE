@@ -60,6 +60,9 @@ public class Account implements UserDetails {
         return List.of(new SimpleGrantedAuthority(role.toString()));
     }
 
+
+
+
     @Override
     public String getUsername() {
         return this.email;
