@@ -48,6 +48,6 @@ public class PlanManagementAPI {
     @DeleteMapping
     public ResponseEntity deletePlan(@RequestBody PlanRequest planRequest) {
         planService.deletePlan(planRequest);
-        return ResponseEntity.ok("Delete this Treatment plan sucessfully");
+        return ResponseEntity.ok("Delete " +planRequest.getId()+ " Treatment plan id sucessfully");
     }
 }

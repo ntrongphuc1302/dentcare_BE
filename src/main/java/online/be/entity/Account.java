@@ -33,7 +33,7 @@ public class Account implements UserDetails {
     @Column(unique = true)
     String phone;
 
-    @Column(nullable = false)
+
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     String password;
 
