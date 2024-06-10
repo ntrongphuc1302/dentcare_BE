@@ -180,7 +180,7 @@ public class AuthenticationService implements UserDetailsService {
         emailDetail.setSubject("Reset password for account " + account.getEmail() + "!");
         emailDetail.setMsgBody("aaa");
         emailDetail.setButtonValue("Reset Password");
-        emailDetail.setLink("http://dentcare.website/reset" + tokenService.generateToken(account));
+        emailDetail.setLink("http://dentcare.website/reset?token=" + tokenService.generateToken(account));
         emailService.sendMailTemplate(emailDetail);
     }
 
