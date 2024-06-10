@@ -135,7 +135,8 @@ public class AuthenticationService implements UserDetailsService {
             accountResponse.setId(account.getId());
             accountResponse.setPhone(account.getPhone());
             accountResponse.setToken(tokenService.generateToken(account));
-            return accountResponse;
+            accountResponse.setRole(account.getRole());
+//            return accountResponse;
 
         }catch (FirebaseAuthException e){
             e.printStackTrace();
