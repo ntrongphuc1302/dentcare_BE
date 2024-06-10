@@ -33,7 +33,9 @@ public class RoomService {
         Room newRoom = new Room();
         newRoom.setName(roomRequest.getName());
         newRoom.setRoomEnum(RoomEnum.ACTIVE);
-        var clinic = clinicRepository.findById(roomRequest.getClinicId()).orElseThrow(() -> new NotFoundException("Clinic not found with id "));;
+        var clinic = clinicRepository.findById(roomRequest.getClinicId()).
+                orElseThrow(() -> new NotFoundException("Clinic not found with id "));;
+        newRoom.setClinic(clinic);
 
         return roomRepository.save(newRoom);
     }

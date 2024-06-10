@@ -42,7 +42,8 @@ public class ClinicService {
     }
 
     public DentalClinic updateClinic(ClinicByManagerRequest clinicDetails) {
-        DentalClinic clinic = clinicRepository.findById(clinicDetails.getId()).orElseThrow(() -> new NotFoundException("Clinic not found with id " + clinicDetails.getId()));
+        DentalClinic clinic = clinicRepository.findById(clinicDetails.getId()).
+                orElseThrow(() -> new NotFoundException("Clinic not found with id " + clinicDetails.getId()));
         if (clinic != null) {
             clinic.setClinicEnum(clinicDetails.getClinicEnum());
             clinic.setClinicName(clinicDetails.getClinicName());
@@ -56,7 +57,8 @@ public class ClinicService {
     }
 
     public void deleteClinic(Long id) {
-        DentalClinic optionalClinic = clinicRepository.findById(id).orElseThrow(() -> new NotFoundException("Clinic not found with id " + id));
+        DentalClinic optionalClinic = clinicRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("Clinic not found with id " + id));
         optionalClinic.setClinicEnum(ClinicEnum.INACTIVE);
         clinicRepository.save(optionalClinic);
     }

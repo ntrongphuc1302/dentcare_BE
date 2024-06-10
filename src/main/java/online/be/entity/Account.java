@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import online.be.enums.Role;
+import online.be.enums.Status;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -42,6 +43,9 @@ public class Account implements UserDetails {
 //    String qualification; +1 việc
 //
 //    String specialization;
+    //trạng thái hoạt động của tài khoản
+    @Enumerated(EnumType.STRING)
+    Status status;
 
     @JsonIgnore
     @ManyToOne

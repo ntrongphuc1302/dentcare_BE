@@ -67,7 +67,7 @@ public class AuthenticationService implements UserDetailsService {
             emailDetail.setSubject("You are invited to system!");
             emailDetail.setMsgBody("aaa");
             emailDetail.setButtonValue("Login to system");
-            emailDetail.setLink("http://jewerystorepoppy.online/");
+            emailDetail.setLink("http://dentcare.website/login");
             emailService.sendMailTemplate(emailDetail);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -90,8 +90,11 @@ public class AuthenticationService implements UserDetailsService {
         account.setEmail(adminRegisterRequest.getEmail());
         account.setFullName(adminRegisterRequest.getFullName());
         // Gán Clinic ID cho tài khoản từ yêu cầu đăng ký
-        var clinic = clinicRepository.findById(adminRegisterRequest.getClinicId())
-                .orElseThrow(() -> new NotFoundException("Cannot find this clinicId"));
+        DentalClinic clinic = null;
+        if (adminRegisterRequest.getRole() != Role.ADMIN) {
+            clinic = clinicRepository.findById(adminRegisterRequest.getClinicId())
+                    .orElseThrow(() -> new NotFoundException("Cannot find this clinicId"));
+        }
 
         account.setDentalClinic(clinic);
 
@@ -102,7 +105,7 @@ public class AuthenticationService implements UserDetailsService {
             emailDetail.setSubject("You are invited to system!");
             emailDetail.setMsgBody("aaa");
             emailDetail.setButtonValue("Login to system");
-            emailDetail.setLink("http://jewerystorepoppy.online/");
+            emailDetail.setLink("http://dentcare.website/login");
             emailService.sendMailTemplate(emailDetail);
         } catch (Exception e) {
             System.out.println(e.getMessage());
@@ -177,7 +180,7 @@ public class AuthenticationService implements UserDetailsService {
         emailDetail.setSubject("Reset password for account " + account.getEmail() + "!");
         emailDetail.setMsgBody("aaa");
         emailDetail.setButtonValue("Reset Password");
-        emailDetail.setLink("http://jewerystorepoppy.online/reset-password?token=" + tokenService.generateToken(account));
+        emailDetail.setLink("http://dentcare.website/reset" + tokenService.generateToken(account));
         emailService.sendMailTemplate(emailDetail);
     }
 

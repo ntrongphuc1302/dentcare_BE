@@ -22,7 +22,6 @@ public class DentalClinic {
 
     String clinicName;
 
-    @Column(unique = true)
     String address;
 
     String openHours;
