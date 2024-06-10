@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/clinic")
 @SecurityRequirement(name = "api")
-
 public class ClinicManagementAPI {
 
     @Autowired
