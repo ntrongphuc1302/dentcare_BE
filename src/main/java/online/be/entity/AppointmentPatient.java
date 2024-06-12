@@ -22,12 +22,12 @@ public class AppointmentPatient {
 
 
     @ManyToOne
-            @JoinColumn(name = "patient_id")
+    @JoinColumn(name = "patient_id")
     Patient patient;
 
 
     @ManyToOne
-            @JoinColumn(name = "dentistService_id")
+    @JoinColumn(name = "dentistService_id")
     DentistService dentistService;
 
     @OneToOne(mappedBy = "appointmentPatient")

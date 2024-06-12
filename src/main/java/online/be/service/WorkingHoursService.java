@@ -1,5 +1,6 @@
 package online.be.service;
 
+import online.be.entity.Account;
 import online.be.entity.WorkingHours;
 import online.be.exception.DuplicateException;
 import online.be.exception.NotFoundException;
@@ -18,17 +19,21 @@ public class WorkingHoursService {
     @Autowired
     private WorkingHoursRepository workingHoursRepository;
 
+    @Autowired
+    AuthenticationService authenticationService;
+
     public List<WorkingHours> getAllWorkingHours() {
         return workingHoursRepository.findAll();
     }
 
     public WorkingHours createWorkingHours(WorkingHoursRequest workingHoursRequest) {
         WorkingHours workingHours = new WorkingHours();
+        Account account = authenticationService.getCurrentAccount();
         workingHours.setDate(workingHoursRequest.getDate());
         workingHours.setStartTime(workingHoursRequest.getStartTime());
         workingHours.setEndTime(workingHoursRequest.getEndTime());
         workingHours.setStatus(workingHoursRequest.getStatus());
-
+        workingHours.setAccount(account);
         try {
             return workingHoursRepository.save(workingHours);
         } catch (Exception e) {
