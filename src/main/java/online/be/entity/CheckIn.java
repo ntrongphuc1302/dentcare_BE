@@ -1,30 +1,32 @@
 package online.be.entity;
 
 import jakarta.persistence.*;
+import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import online.be.enums.Status;
 
 @Entity
 @Getter
 @Setter
 @ToString
-public class WorkingHours {
+public class CheckIn {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    String date;
+    String checkInTime;
 
-    String startTime;
+    boolean isCheckIn;
 
-    String endTime;
+    boolean isCancle;
 
-    Status status;
+    @OneToOne
+    @JoinColumn(name = "appointment_patient_id")
+    AppointmentPatient appointmentPatient;
 
     @ManyToOne
-    @JoinColumn(name = "dentist_id")
+    @JoinColumn(name = "staff_id")
     Account account;
 }

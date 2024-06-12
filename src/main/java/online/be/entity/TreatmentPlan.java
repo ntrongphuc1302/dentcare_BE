@@ -24,4 +24,8 @@ public class TreatmentPlan {
 
     @Enumerated(EnumType.STRING)
     Status status;
+
+    @ManyToOne
+    @JoinColumn(name = "record_id")
+    MedicalRecord medicalRecord;
 }

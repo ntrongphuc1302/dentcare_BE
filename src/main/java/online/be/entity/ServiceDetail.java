@@ -6,6 +6,9 @@ import lombok.Setter;
 import lombok.ToString;
 import online.be.enums.ServiceDetailEnum;
 
+import java.util.List;
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -25,4 +28,13 @@ public class ServiceDetail {
 
     @Enumerated(EnumType.STRING)
     ServiceDetailEnum serviceDetailEnum;
+
+
+    @OneToMany(mappedBy = "serviceDetail")
+    List<DentistService> dentistServiceLists;
+
+
+
+
+
 }

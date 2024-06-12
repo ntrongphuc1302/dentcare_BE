@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 import online.be.enums.RoomEnum;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -28,4 +30,7 @@ public class Room {
     @ManyToOne
     @JoinColumn(name = "clinic_id")
     private DentalClinic clinic;
+
+    @OneToMany(mappedBy = "room")
+    List<Slot> slots;
 }

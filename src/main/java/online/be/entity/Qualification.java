@@ -28,4 +28,8 @@ public class Qualification {
     @Enumerated(EnumType.STRING)
     QualificationEnum qualificationEnum;
 
+    @ManyToOne
+    @JoinColumn(name = "dentist_id")
+    Account account;
+
 }
