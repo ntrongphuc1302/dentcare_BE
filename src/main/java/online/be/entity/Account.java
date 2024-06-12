@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -54,12 +55,25 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "account")
     private List<Patient> patients;
 
+    @OneToMany(mappedBy = "account")
+    List<DentistService> dentistServices;
+
+    @OneToMany(mappedBy = "account")
+    List<CheckIn> checkIns;
+
+    @OneToMany(mappedBy = "account")
+    List<Slot> slots;
+
+    @OneToMany(mappedBy = "account")
+    List<WorkingHours> workingHours;
+
+    @OneToMany(mappedBy = "account")
+    List<Qualification> qualifications;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.toString()));
     }
-
-
 
 
     @Override

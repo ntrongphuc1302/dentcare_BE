@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.ToString;
 import online.be.enums.PatientEnum;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -36,5 +38,12 @@ public class Patient {
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;
+
+
+    @OneToMany(mappedBy = "patient")
+    List<AppointmentPatient> appointmentPatients;
+
+
+
 
 }

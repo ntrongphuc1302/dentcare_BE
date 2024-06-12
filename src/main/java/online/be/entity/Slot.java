@@ -1,30 +1,36 @@
 package online.be.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
 import online.be.enums.Status;
 
-@Entity
-@Getter
-@Setter
-@ToString
-public class WorkingHours {
+import java.util.List;
 
+@Entity
+public class Slot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    String date;
+    String name;
 
     String startTime;
 
     String endTime;
+
+    int MaxPatient;
+
+    String Date;
 
     Status status;
 
     @ManyToOne
     @JoinColumn(name = "dentist_id")
     Account account;
+
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    Room room;
+
+    @OneToMany(mappedBy = "slot")
+    List<AppointmentPatient> appointmentPatients;
 }
