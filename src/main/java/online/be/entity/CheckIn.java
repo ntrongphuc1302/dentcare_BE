@@ -20,7 +20,7 @@ public class CheckIn {
 
     boolean isCheckIn;
 
-    boolean isCancle;
+    boolean isCancel;
 
     @OneToOne
     @JoinColumn(name = "appointment_patient_id")

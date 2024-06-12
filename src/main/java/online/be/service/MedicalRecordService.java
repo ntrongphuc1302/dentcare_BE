@@ -1,5 +1,6 @@
 package online.be.service;
 
+import online.be.entity.AppointmentPatient;
 import online.be.entity.MedicalRecord;
 import online.be.enums.MedicalRecordEnum;
 import online.be.exception.NotFoundException;
@@ -23,9 +24,11 @@ public class MedicalRecordService {
 
     public MedicalRecord createMedicalRecord(MedicalRecordRequest medicalRecordRequest) {
         MedicalRecord medicalRecord = new MedicalRecord();
+        AppointmentPatient appointmentPatient = new AppointmentPatient();
         medicalRecord.setNote(medicalRecordRequest.getNote());
         medicalRecord.setDiagnosis(medicalRecordRequest.getDiagnosis());
         medicalRecord.setMedicalRecordEnum(MedicalRecordEnum.ACTIVE);
+        medicalRecord.setAppointmentPatient(appointmentPatient);
         return medicalRecordRepository.save(medicalRecord);
     }
 
