@@ -45,11 +45,17 @@ public class Filter extends OncePerRequestFilter {
             "/api/register",
             "/api/register-by-admin",
             "/api/forgot-password",
-            "/api/account",
-            "/api/login-google"
+            "/api/account/role/{role}/clinic/{clinicId}",
+            "/api/login-google",
+            "/api/account/role/**"
     );
 
-    private boolean isPermitted(String uri) {
+    private boolean isPermitted(String uri, String method) {
+        if(uri.contains("api/service") && method.equals("GET")){
+            return true;
+        } else if(uri.contains("api/clinic") && method.equals("GET")){
+            return true;
+        }
         AntPathMatcher pathMatcher = new AntPathMatcher();
         return AUTH_PERMISSION.stream().anyMatch(pattern -> pathMatcher.match(pattern, uri));
     }
@@ -58,9 +64,10 @@ public class Filter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String uri = request.getRequestURI(); // /login, /register,...
+        String method = request.getMethod();
         System.out.println(uri);
 
-        if (isPermitted(uri)) {
+        if (isPermitted(uri, method)) {
             // yêu cầu truy cập 1 api => ai cũng truy cập đc
             filterChain.doFilter(request, response); // cho phép truy cập dô controller
         } else {

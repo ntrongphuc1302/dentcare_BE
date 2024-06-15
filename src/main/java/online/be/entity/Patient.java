@@ -39,7 +39,7 @@ public class Patient {
     @JoinColumn(name = "account_id")
     private Account account;
 
-
+    @JsonIgnore
     @OneToMany(mappedBy = "patient")
     List<AppointmentPatient> appointmentPatients;
 

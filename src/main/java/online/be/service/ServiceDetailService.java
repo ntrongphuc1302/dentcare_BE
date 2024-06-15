@@ -18,11 +18,11 @@ public class ServiceDetailService {
     @Autowired
     private ServiceDetailRepository serviceDetailRepository;
 
-    public List<ServiceDetail> getAllgetAllServiceDetail() {
+    public List<ServiceDetail> getAllServiceDetail() {
         return serviceDetailRepository.findAllByServiceDetailEnum(ServiceDetailEnum.ACTIVE);
     }
 
-public ServiceDetail createDentistService(ServiceDetailRequest serviceDetailRequest) {
+public ServiceDetail createService(ServiceDetailRequest serviceDetailRequest) {
         ServiceDetail service = new ServiceDetail();
         service.setName(serviceDetailRequest.getName());
         service.setPrice(serviceDetailRequest.getPrice());
@@ -31,7 +31,7 @@ public ServiceDetail createDentistService(ServiceDetailRequest serviceDetailRequ
         try {
             return serviceDetailRepository.save(service);
         } catch (Exception e) {
-            throw new DuplicateException("Dentist Service already exists!");
+            throw new DuplicateException("Service already exists!");
         }
     }
 

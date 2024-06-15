@@ -42,4 +42,8 @@ public class APIHandleException {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(InvalidRoleException.class)
+    public  ResponseEntity<Object> handleResponseEntity(InvalidRoleException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.UNAUTHORIZED);
+    }
 }

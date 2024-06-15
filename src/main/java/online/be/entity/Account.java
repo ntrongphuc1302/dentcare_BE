@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -55,18 +54,23 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "account")
     private List<Patient> patients;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "account")
-    List<DentistService> dentistServices;
+    List<DentistServices> dentistServices;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "account")
     List<CheckIn> checkIns;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "account")
     List<Slot> slots;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "account")
     List<WorkingHours> workingHours;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "account")
     List<Qualification> qualifications;
 
