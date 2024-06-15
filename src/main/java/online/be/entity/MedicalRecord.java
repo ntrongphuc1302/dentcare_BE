@@ -1,5 +1,6 @@
 package online.be.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,6 +30,7 @@ public class MedicalRecord {
     @JoinColumn(name = "appointment_patient_id")
     AppointmentPatient appointmentPatient;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "medicalRecord")
     List<TreatmentPlan> treatmentPlans;
 }

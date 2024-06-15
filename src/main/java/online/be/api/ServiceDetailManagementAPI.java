@@ -19,12 +19,12 @@ public class ServiceDetailManagementAPI {
 
     @GetMapping
     public ResponseEntity getAllServiceDetail() {
-        return ResponseEntity.ok(serviceDetailService.getAllgetAllServiceDetail());
+        return ResponseEntity.ok(serviceDetailService.getAllServiceDetail());
     }
 
     @PostMapping
     public ResponseEntity createDentistService(@RequestBody ServiceDetailRequest serviceDetailRequest) {
-        return ResponseEntity.ok(serviceDetailService.createDentistService(serviceDetailRequest));
+        return ResponseEntity.ok(serviceDetailService.createService(serviceDetailRequest));
     }
 
     @PutMapping

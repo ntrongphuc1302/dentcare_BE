@@ -1,6 +1,7 @@
 package online.be.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.mail.Address;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,7 +9,9 @@ import lombok.Setter;
 import lombok.ToString;
 import online.be.enums.ClinicEnum;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -20,8 +23,10 @@ public class DentalClinic {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
+    @Column(unique = true)
     String clinicName;
 
+    @Column(unique = true)
     String address;
 
     String openHours;
@@ -31,9 +36,15 @@ public class DentalClinic {
     @Enumerated(EnumType.STRING)
     ClinicEnum clinicEnum;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "dentalClinic")
     private List<Account> accounts;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "clinic")
     private List<Room> rooms;
+
+    @ManyToMany(mappedBy = "dentalClinics")
+    @JsonManagedReference
+    private Set<ServiceDetail> serviceDetails = new HashSet<>();
 }
