@@ -9,4 +9,5 @@ import java.util.List;
 public interface ServiceDetailRepository extends JpaRepository<ServiceDetail, Long> {
     ServiceDetail findById(long id);
     List<ServiceDetail> findAllByServiceDetailEnum(ServiceDetailEnum serviceDetailEnum);
+    List<ServiceDetail> findServiceDetailsByDentalClinicsId(long id);
 }

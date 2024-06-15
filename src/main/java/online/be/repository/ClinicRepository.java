@@ -11,4 +11,5 @@ import java.util.List;
 public interface ClinicRepository extends JpaRepository<DentalClinic, Long> {
 //    DentalClinic findById(long id);
     List<DentalClinic> findAllByClinicEnum(ClinicEnum clinicEnum);
+    List<DentalClinic> findDentalClinicsByServiceDetailsId(long id);
 }

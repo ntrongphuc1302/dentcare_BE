@@ -31,6 +31,7 @@ public class Room {
     @JoinColumn(name = "clinic_id")
     private DentalClinic clinic;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "room")
     List<Slot> slots;
 }
