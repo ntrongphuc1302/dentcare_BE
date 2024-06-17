@@ -34,7 +34,6 @@ public class Patient {
     @Enumerated(EnumType.STRING)
     PatientEnum patientEnum;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "account_id")
     private Account account;

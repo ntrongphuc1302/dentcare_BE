@@ -22,6 +22,10 @@ public class ServiceDetailService {
         return serviceDetailRepository.findAllByServiceDetailEnum(ServiceDetailEnum.ACTIVE);
     }
 
+    public ServiceDetail getServiceById(long id) {
+        return serviceDetailRepository.findById(id);
+    }
+
 public ServiceDetail createService(ServiceDetailRequest serviceDetailRequest) {
         ServiceDetail service = new ServiceDetail();
         service.setName(serviceDetailRequest.getName());
