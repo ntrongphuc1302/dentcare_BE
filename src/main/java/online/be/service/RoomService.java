@@ -29,6 +29,10 @@ public class RoomService {
         return roomRepository.findAllByRoomEnum(RoomEnum.ACTIVE);
     }
 
+    public Room getRoomByName(String name) {
+        return roomRepository.findRoomByName(name);
+    }
+
     public Room createRoom(RoomRequest roomRequest) {
         Room newRoom = new Room();
         newRoom.setName(roomRequest.getName());

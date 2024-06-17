@@ -26,9 +26,14 @@ public class SlotService {
         return slotRepository.findById(id);
     }
 
+    public Slot getSlotByName(String name) {
+        return slotRepository.findSlotByName(name);
+    }
+
     public Slot createSlot(SlotRequest slotRequest)
     {
         Slot slot = new Slot();
+        slot.setName(slotRequest.getName());
         slot.setStartTime(slotRequest.getStartTime());
         slot.setEndTime(slotRequest.getEndTime());
         slot.setMaxPatient(slotRequest.getMaxPatient());
@@ -45,6 +50,7 @@ public class SlotService {
     {
         Slot slot = slotRepository.findById(slotUpdateRequest.getId());
         if (slot != null) {
+            slot.setName(slotUpdateRequest.getName());
             slot.setStartTime(slotUpdateRequest.getStartTime());
             slot.setEndTime(slotUpdateRequest.getEndTime());
             slot.setMaxPatient(slotUpdateRequest.getMaxPatient());
