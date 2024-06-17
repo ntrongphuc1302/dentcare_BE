@@ -28,6 +28,10 @@ public class ServiceClinicService {
         return clinicRepository.findDentalClinicsByServiceDetailsId(id);
     }
 
+    public List<DentalClinic> getAllDentalClinicsByServiceDetailName(String name) {
+        return clinicRepository.findDentalClinicsByServiceDetailsName(name);
+    }
+
     public void enrollServiceInClinic(ServiceClinicRequest serviceClinicRequest) {
         ServiceDetail serviceDetail = serviceDetailRepository.findById(serviceClinicRequest.getServiceId());
 
