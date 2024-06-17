@@ -27,6 +27,12 @@ public class ServiceClinicAPI {
                 getAllDentalClinicsByServiceDetailId(id));
     }
 
+    @GetMapping("/search-clinic-by-service-name/{name}")
+    public ResponseEntity getAllDentalClinicsByServiceDetailName(@PathVariable String name) {
+        return ResponseEntity.ok(serviceClinicService.
+                getAllDentalClinicsByServiceDetailName(name));
+    }
+
     @PostMapping
     public ResponseEntity enrollServiceInClinic(@RequestBody ServiceClinicRequest serviceClinicRequest) {
         serviceClinicService.enrollServiceInClinic(serviceClinicRequest);

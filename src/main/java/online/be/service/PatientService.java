@@ -30,6 +30,10 @@ public class PatientService {
         return patientRepository.findAllByPatientEnum(PatientEnum.ACTIVE);
     }
 
+    public Patient getPatientByName(String name) {
+        return patientRepository.findByName(name);
+    }
+
     public Patient createPatient(PatientRequest patientRequest) {
 //        Account account = authenticationRepository.findById(patientRequest.getAccountId()).get();
         Account account = authenticationService.getCurrentAccount();
