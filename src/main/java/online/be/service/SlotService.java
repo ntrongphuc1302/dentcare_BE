@@ -1,6 +1,7 @@
 package online.be.service;
 
 import online.be.entity.Slot;
+import online.be.enums.Status;
 import online.be.exception.DuplicateException;
 import online.be.exception.NotFoundException;
 import online.be.model.request.SlotRequest;
@@ -32,7 +33,7 @@ public class SlotService {
         slot.setEndTime(slotRequest.getEndTime());
         slot.setMaxPatient(slotRequest.getMaxPatient());
         slot.setDate(slotRequest.getDate());
-        slot.setStatus(slotRequest.getStatus());
+        slot.setStatus(Status.ACTIVE);
         try {
             return slotRepository.save(slot);
         } catch (Exception e) {

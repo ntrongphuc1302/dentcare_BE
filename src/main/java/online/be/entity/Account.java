@@ -46,11 +46,11 @@ public class Account implements UserDetails {
     @Enumerated(EnumType.STRING)
     Status status;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "dental_clinic_id")
     private DentalClinic dentalClinic;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "account")
     private List<Patient> patients;
 

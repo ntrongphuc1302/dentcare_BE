@@ -36,6 +36,12 @@ public class AccountManagementAPI {
         return ResponseEntity.ok(accountService.getAccountById(id));
     }
 
+    @GetMapping("role/DENTIST/clinic/{clinicId}/service/{serviceId}")
+    public ResponseEntity getAccountByRoleAndClinicAndService(@PathVariable long clinicId,@PathVariable long serviceId) {
+        return ResponseEntity.ok(accountService.
+                getAccountByRoleAndClinicAndService(Role.DENTIST, clinicId, serviceId));
+    }
+
     @PutMapping
     public ResponseEntity updateAccount(@RequestBody AccountRequest accountRequest) {
         return ResponseEntity.ok(accountService.updateAccount(accountRequest));

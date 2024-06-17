@@ -31,6 +31,11 @@ public class AccountService {
         return accountRepository.findAccountsByRole(role);
     }
 
+    public List<Account> getAccountByRoleAndClinicAndService(Role role, long clinicId, long serviceId) {
+        return accountRepository.
+                findByRoleAndDentalClinicIdAndDentistServices_ServiceDetailId(role, clinicId, serviceId);
+    }
+
     public Account getAccountById(long id) {
         try {
             return accountRepository.findById(id);

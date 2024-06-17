@@ -22,6 +22,11 @@ public class ServiceDetailManagementAPI {
         return ResponseEntity.ok(serviceDetailService.getAllServiceDetail());
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity getServiceById(@PathVariable long id) {
+        return ResponseEntity.ok(serviceDetailService.getServiceById(id));
+    }
+
     @PostMapping
     public ResponseEntity createDentistService(@RequestBody ServiceDetailRequest serviceDetailRequest) {
         return ResponseEntity.ok(serviceDetailService.createService(serviceDetailRequest));
