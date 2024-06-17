@@ -47,14 +47,16 @@ public class Filter extends OncePerRequestFilter {
             "/api/forgot-password",
             "/api/account/role/{role}/clinic/{clinicId}",
             "/api/login-google",
-            "/api/account/role/**",
-            "/api/slot/**"
+            "/api/account/role/**"
+
     );
 
     private boolean isPermitted(String uri, String method) {
         if(uri.contains("api/service") && method.equals("GET")){
             return true;
         } else if(uri.contains("api/clinic") && method.equals("GET")){
+            return true;
+        } else if (uri.contains("/api/slot") && method.equals("GET")) {
             return true;
         }
         AntPathMatcher pathMatcher = new AntPathMatcher();
