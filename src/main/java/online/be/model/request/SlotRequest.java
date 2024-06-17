@@ -7,6 +7,7 @@ import online.be.enums.Status;
 @Getter
 @Setter
 public class SlotRequest {
+    String name;
     String startTime;
     String endTime;
     int maxPatient;

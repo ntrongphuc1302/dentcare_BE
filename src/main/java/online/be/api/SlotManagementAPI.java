@@ -21,6 +21,11 @@ public class SlotManagementAPI {
         return ResponseEntity.ok(slotService.getAllSlots());
     }
 
+    @PostMapping("/search-by-name/{name}")
+    public ResponseEntity getSlotByName(@PathVariable String name) {
+        return ResponseEntity.ok(slotService.getSlotByName(name));
+    }
+
     @PostMapping
     public ResponseEntity createSlot(@RequestBody SlotRequest slotRequest) {
         return ResponseEntity.ok(slotService.createSlot(slotRequest));

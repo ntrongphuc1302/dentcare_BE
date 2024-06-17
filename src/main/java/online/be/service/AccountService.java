@@ -44,6 +44,10 @@ public class AccountService {
         }
     }
 
+    public List<Account> getAccountByName(String name) {
+        return accountRepository.findAccountsByFullName(name);
+    }
+
     public Account updateAccount(AccountRequest accountRequest) {
         Account account = accountRepository.findById(accountRequest.getId());
         if (account != null) {
