@@ -22,6 +22,11 @@ public class DentalRoomManagementAPI {
         return ResponseEntity.ok(roomService.getAllRooms());
     }
 
+    @GetMapping("search-by-name/{name}")
+    public ResponseEntity getRoomByName(@PathVariable String name) {
+        return ResponseEntity.ok(roomService.getRoomByName(name));
+    }
+
     @PostMapping
     public ResponseEntity createRoom(@RequestBody RoomRequest roomRequest) {
         return ResponseEntity.ok(roomService.createRoom(roomRequest));

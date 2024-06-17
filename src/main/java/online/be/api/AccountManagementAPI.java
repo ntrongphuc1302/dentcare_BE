@@ -36,6 +36,11 @@ public class AccountManagementAPI {
         return ResponseEntity.ok(accountService.getAccountById(id));
     }
 
+    @GetMapping("/search-by-name/{name}")
+    public ResponseEntity getAccountByName(@PathVariable String name) {
+        return ResponseEntity.ok(accountService.getAccountByName(name));
+    }
+
     @GetMapping("role/DENTIST/clinic/{clinicId}/service/{serviceId}")
     public ResponseEntity getAccountByRoleAndClinicAndService(@PathVariable long clinicId,@PathVariable long serviceId) {
         return ResponseEntity.ok(accountService.

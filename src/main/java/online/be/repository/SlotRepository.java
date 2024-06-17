@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SlotRepository extends JpaRepository<Slot, Long> {
     Slot findById(long id);
+    Slot findSlotByName(String name);
 }

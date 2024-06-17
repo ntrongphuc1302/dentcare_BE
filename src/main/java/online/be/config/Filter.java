@@ -48,6 +48,7 @@ public class Filter extends OncePerRequestFilter {
             "/api/account/role/{role}/clinic/{clinicId}",
             "/api/login-google",
             "/api/account/role/**"
+
     );
 
     private boolean isPermitted(String uri, String method) {
