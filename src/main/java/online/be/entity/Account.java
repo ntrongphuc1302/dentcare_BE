@@ -66,9 +66,9 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "account")
     List<Slot> slots;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "account")
-    List<WorkingHours> workingHours;
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "account")
+//    List<WorkingHours> workingHours;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
