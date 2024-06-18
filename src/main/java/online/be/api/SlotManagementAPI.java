@@ -26,6 +26,11 @@ public class SlotManagementAPI {
         return ResponseEntity.ok(slotService.getSlotByName(name));
     }
 
+    @GetMapping("/dentists/{id}")
+    public ResponseEntity getSlotsByDentist(@PathVariable long id) {
+        return ResponseEntity.ok(slotService.getSlotsByDentist(id));
+    }
+
     @PostMapping
     public ResponseEntity createSlot(@RequestBody SlotRequest slotRequest) {
         return ResponseEntity.ok(slotService.createSlot(slotRequest));
