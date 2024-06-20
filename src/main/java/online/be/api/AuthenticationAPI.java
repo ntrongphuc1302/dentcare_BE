@@ -42,6 +42,7 @@ public class AuthenticationAPI {
         return ResponseEntity.ok(account);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("register-by-admin") // /api/register
     public ResponseEntity register(@RequestBody AdminRegisterRequest adminRegisterRequest) {
         // account đã add xuống db
@@ -71,6 +72,7 @@ public class AuthenticationAPI {
         authenticationService.resetPassword(resetPasswordRequest);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("account")
     public ResponseEntity getAllAccount() {
         return ResponseEntity.ok(authenticationService.getAllAccount());

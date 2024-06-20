@@ -19,6 +19,8 @@ public class MedicalRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
+    String name;
+
     String note;
 
     String diagnosis;

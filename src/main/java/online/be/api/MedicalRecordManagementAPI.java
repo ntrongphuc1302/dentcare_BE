@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/medicalrecord")
+@RequestMapping("/api/medical-record")
 @SecurityRequirement(name = "api")
 public class MedicalRecordManagementAPI {
 

@@ -9,4 +9,5 @@ import java.util.List;
 public interface MedicalRecordRepository extends JpaRepository<MedicalRecord, Long> {
     MedicalRecord findById(long id);
     List<MedicalRecord> findAllByMedicalRecordEnum(MedicalRecordEnum medicalRecordEnum);
+    List<MedicalRecord> findByAppointmentPatient_PatientId(long id);
 }

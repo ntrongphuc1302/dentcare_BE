@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class MedicalRecordUpdateRequest {
     long id;
+    String name;
     String note;
     String diagnosis;
 }

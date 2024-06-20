@@ -46,5 +46,6 @@ public class DentalClinic {
 
     @ManyToMany(mappedBy = "dentalClinics")
     @JsonManagedReference
+    @JsonIgnore
     private Set<ServiceDetail> serviceDetails = new HashSet<>();
 }

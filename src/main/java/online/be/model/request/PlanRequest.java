@@ -14,4 +14,5 @@ public class PlanRequest {
     String frequency;
     @Enumerated(EnumType.STRING)
     Status status;
+    long medicalId;
 }

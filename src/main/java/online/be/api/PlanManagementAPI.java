@@ -35,6 +35,11 @@ public class PlanManagementAPI {
         return ResponseEntity.ok(planService.getPlanByName(name));
     }
 
+    @GetMapping("/record/{name}")
+    public ResponseEntity getPlanByRecordName(@PathVariable String name) {
+        return ResponseEntity.ok(planService.getPlanByRecordName(name));
+    }
+
     @PostMapping
     public ResponseEntity createPlan(@RequestBody PlanRequest planRequest){
         return ResponseEntity.ok(planService.createPlan(planRequest));
