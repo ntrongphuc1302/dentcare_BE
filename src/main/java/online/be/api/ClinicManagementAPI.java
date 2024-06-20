@@ -7,6 +7,7 @@ import online.be.model.request.ClinicRequest;
 import online.be.service.ClinicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,6 +26,17 @@ public class ClinicManagementAPI {
     @GetMapping("/{id}")
     public ResponseEntity getClinicById(@PathVariable long id) {
         return ResponseEntity.ok(clinicService.getClinicById(id));
+    }
+
+    @GetMapping("/dentist/{dentistId}/service/{serviceId}")
+    public ResponseEntity getClinicByDentistIdAndServiceId(@PathVariable long dentistId, @PathVariable long serviceId) {
+        return ResponseEntity.ok(clinicService.getClinicByDentistIdAndServiceId(dentistId, serviceId));
+    }
+
+    @GetMapping("/by-admin")
+//    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity getAllClinicsByAdmin() {
+        return ResponseEntity.ok(clinicService.getAllClinicsByAdmin());
     }
 
     @PostMapping

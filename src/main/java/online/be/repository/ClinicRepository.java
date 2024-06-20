@@ -13,4 +13,5 @@ public interface ClinicRepository extends JpaRepository<DentalClinic, Long> {
     List<DentalClinic> findAllByClinicEnum(ClinicEnum clinicEnum);
     List<DentalClinic> findDentalClinicsByServiceDetailsId(long id);
     List<DentalClinic> findDentalClinicsByServiceDetailsName(String name);
+    DentalClinic findByAccountsIdAndServiceDetailsId(long dentistId, long serviceId);
 }
