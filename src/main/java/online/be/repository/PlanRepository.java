@@ -10,4 +10,5 @@ public interface PlanRepository extends JpaRepository<TreatmentPlan, Long> {
     TreatmentPlan findById(long id);
     TreatmentPlan findByName(String name);
     List<TreatmentPlan> findAllByStatus(Status status);
+    List<TreatmentPlan> findByMedicalRecordName(String name);
 }

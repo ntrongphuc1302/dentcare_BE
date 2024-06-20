@@ -27,6 +27,11 @@ public class PatientManagementAPI {
         return ResponseEntity.ok(patientService.getPatientByName(name));
     }
 
+    @GetMapping("/phone/{phone}")
+    public ResponseEntity getPatientByPhone(@PathVariable String phone) {
+        return ResponseEntity.ok(patientService.getPatientByPhone(phone));
+    }
+
     @PostMapping
     public ResponseEntity createPatient(@RequestBody PatientRequest patientRequest) {
         return ResponseEntity.ok(patientService.createPatient(patientRequest));

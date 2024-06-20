@@ -22,6 +22,10 @@ public class ClinicService {
         return clinicRepository.findAllByClinicEnum(ClinicEnum.ACTIVE);
     }
 
+    public List<DentalClinic> getAllClinicsByAdmin() {
+        return clinicRepository.findAll();
+    }
+
     public DentalClinic getClinicById(Long id) {
         return clinicRepository.findById(id).
                 orElseThrow(() -> new NotFoundException("Clinic not found with id " + id));

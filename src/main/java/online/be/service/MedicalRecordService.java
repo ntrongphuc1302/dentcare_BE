@@ -3,9 +3,11 @@ package online.be.service;
 import online.be.entity.AppointmentPatient;
 import online.be.entity.MedicalRecord;
 import online.be.enums.MedicalRecordEnum;
+import online.be.enums.Role;
 import online.be.exception.NotFoundException;
 import online.be.model.request.MedicalRecordRequest;
 import online.be.model.request.MedicalRecordUpdateRequest;
+import online.be.repository.AppointmentPatientRepository;
 import online.be.repository.MedicalRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,23 +20,35 @@ public class MedicalRecordService {
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
 
+    @Autowired
+    private AppointmentPatientRepository appointmentPatientRepository;
+
     public List<MedicalRecord> getAllMedicalRecords() {
         return medicalRecordRepository.findAllByMedicalRecordEnum(MedicalRecordEnum.ACTIVE);
     }
 
     public MedicalRecord createMedicalRecord(MedicalRecordRequest medicalRecordRequest) {
         MedicalRecord medicalRecord = new MedicalRecord();
-        AppointmentPatient appointmentPatient = new AppointmentPatient();
+        AppointmentPatient appointmentPatient = appointmentPatientRepository.
+                findById(medicalRecordRequest.getAppointmentPatientId());
+        medicalRecord.setName(medicalRecordRequest.getName());
         medicalRecord.setNote(medicalRecordRequest.getNote());
         medicalRecord.setDiagnosis(medicalRecordRequest.getDiagnosis());
         medicalRecord.setMedicalRecordEnum(MedicalRecordEnum.ACTIVE);
-        medicalRecord.setAppointmentPatient(appointmentPatient);
+        if (appointmentPatient != null) {
+            medicalRecord.setAppointmentPatient(appointmentPatient);
+        } else {
+            throw new NotFoundException("Cannot found this Appointment");
+        }
+
         return medicalRecordRepository.save(medicalRecord);
     }
 
     public MedicalRecord updateMedicalRecord(MedicalRecordUpdateRequest medicalRecordUpdateRequest) {
         MedicalRecord medicalRecord = medicalRecordRepository.findById(medicalRecordUpdateRequest.getId());
         if (medicalRecord != null) {
+            medicalRecord.setName(medicalRecordUpdateRequest.getName());
+
             medicalRecord.setNote(medicalRecordUpdateRequest.getNote());
             medicalRecord.setDiagnosis(medicalRecordUpdateRequest.getDiagnosis());
             return medicalRecordRepository.save(medicalRecord);
