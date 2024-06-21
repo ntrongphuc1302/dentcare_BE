@@ -9,7 +9,9 @@ import online.be.exception.NotFoundException;
 import online.be.model.request.SlotRequest;
 import online.be.model.request.SlotUpdateRequest;
 import online.be.repository.AccountRepository;
+import online.be.repository.RoomRepository;
 import online.be.repository.SlotRepository;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,9 @@ public class SlotService {
     @Autowired
     private AccountRepository accountRepository;
 
+    @Autowired
+    private RoomRepository roomRepository;
+
     public List<Slot> getAllSlots() {
         return slotRepository.findAll();
     }
@@ -31,6 +36,7 @@ public class SlotService {
     public Slot findById(long id) {
         return slotRepository.findById(id);
     }
+
 
     public Slot getSlotByName(String name) {
         return slotRepository.findSlotByName(name);
@@ -43,7 +49,19 @@ public class SlotService {
         } else {
             throw new InvalidRoleException("The " + account.getRole() + " role is invalid");
         }
+    }
 
+    public List<Slot> getSlotsByRoom(long room_id) {
+        var room = roomRepository.findById(room_id);
+        if (room.getId()==room_id) {
+            return slotRepository.findByRoomId(room_id);
+        } else {
+            throw new NotFoundException("Room not found!");
+        }
+    }
+
+    public List<Slot> getSlotsByDate(String date) {
+        return slotRepository.findByDate(date);
     }
 
     public Slot createSlot(SlotRequest slotRequest)

@@ -21,7 +21,7 @@ public class SlotManagementAPI {
         return ResponseEntity.ok(slotService.getAllSlots());
     }
 
-    @GetMapping("/search-by-name/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity getSlotByName(@PathVariable String name) {
         return ResponseEntity.ok(slotService.getSlotByName(name));
     }
@@ -29,6 +29,16 @@ public class SlotManagementAPI {
     @GetMapping("/dentists/{id}")
     public ResponseEntity getSlotsByDentist(@PathVariable long id) {
         return ResponseEntity.ok(slotService.getSlotsByDentist(id));
+    }
+
+    @GetMapping("/room/{id}")
+    public ResponseEntity getSlotsByRoom(@PathVariable long id) {
+        return ResponseEntity.ok(slotService.getSlotsByRoom(id));
+    }
+
+    @GetMapping("/date/{date}")
+    public ResponseEntity getSlotsByDate(@PathVariable String date) {
+        return ResponseEntity.ok(slotService.getSlotsByDate(date));
     }
 
     @PostMapping

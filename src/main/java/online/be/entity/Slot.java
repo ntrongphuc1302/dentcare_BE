@@ -22,9 +22,9 @@ public class Slot {
 
     String endTime;
 
-    int MaxPatient;
+    int maxPatient;
 
-    String Date;
+    String date;
 
     Status status;
 

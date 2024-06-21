@@ -22,7 +22,7 @@ public class PatientManagementAPI {
         return ResponseEntity.ok(patientService.getAllPatients());
     }
 
-    @GetMapping("/search-patient-by-name/{name}")
+    @GetMapping("/name/{name}")
     public ResponseEntity getPatientByName(@PathVariable String name) {
         return ResponseEntity.ok(patientService.getPatientByName(name));
     }
