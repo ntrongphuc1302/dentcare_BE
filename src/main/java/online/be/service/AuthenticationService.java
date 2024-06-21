@@ -204,4 +204,8 @@ public class AuthenticationService implements UserDetailsService {
     public Account getCurrentAccount() {
         return (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
+
+    public void logout() {
+        SecurityContextHolder.clearContext();
+    }
 }
