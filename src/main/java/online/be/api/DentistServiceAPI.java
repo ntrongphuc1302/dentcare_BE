@@ -36,6 +36,11 @@ public class DentistServiceAPI {
         return ResponseEntity.ok(dentistServiceService.getAllServiceByDentistId(id));
     }
 
+    @GetMapping("/dentist/{dentistId}/service/{serviceId}")
+    public ResponseEntity getByDentistIdAndServiceId(@PathVariable long dentistId, @PathVariable long serviceId ) {
+        return ResponseEntity.ok(dentistServiceService.getByDentistIdAndServiceId(dentistId, serviceId));
+    }
+
     @PostMapping
     public ResponseEntity createDentistService(@RequestBody DentistServiceRequest dentistServiceRequest) {
         return ResponseEntity.ok(dentistServiceService.createDentistService(dentistServiceRequest));

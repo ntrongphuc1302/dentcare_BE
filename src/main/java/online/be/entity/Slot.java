@@ -24,19 +24,23 @@ public class Slot {
 
     int maxPatient;
 
-    String date;
+//    String date;
 
-    Status status;
+//    Status status;
 
-    @ManyToOne
-    @JoinColumn(name = "dentist_id")
-    Account account;
+//    @ManyToOne
+//    @JoinColumn(name = "dentist_id")
+//    Account account;
 
-    @ManyToOne
-    @JoinColumn(name = "room_id")
-    Room room;
+//    @ManyToOne
+//    @JoinColumn(name = "room_id")
+//    Room room;
 
     @JsonIgnore
     @OneToMany(mappedBy = "slot")
     List<AppointmentPatient> appointmentPatients;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "slot")
+    List<WorkingDayOff> workingDayOffs;
 }

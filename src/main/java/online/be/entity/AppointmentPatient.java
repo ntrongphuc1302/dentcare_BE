@@ -27,6 +27,7 @@ public class AppointmentPatient {
     @JoinColumn(name = "patient_id")
     Patient patient;
 
+    String date;
 
     @ManyToOne
     @JoinColumn(name = "dentistServices_id")

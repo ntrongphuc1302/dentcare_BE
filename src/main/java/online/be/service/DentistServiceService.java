@@ -1,6 +1,7 @@
 package online.be.service;
 
 
+import online.be.entity.Account;
 import online.be.entity.DentistServices;
 import online.be.enums.Role;
 import online.be.enums.Status;
@@ -38,6 +39,16 @@ public class DentistServiceService {
 
     public List<DentistServices> getAllDentistByServiceId(long id) {
         return dentistServiceRepository.findAllAccountByServiceDetailId(id);
+    }
+
+    public DentistServices getByDentistIdAndServiceId(long dentistId, long serviceId) {
+        Account account = accountRepository.findById(dentistId);
+        if (account.getRole() == Role.DENTIST) {
+            return dentistServiceRepository.
+                    findByAccountIdAndServiceDetailId(dentistId, serviceId);
+        } else {
+            throw new NotFoundException("Invalid role");
+        }
     }
 
     public List<DentistServices> getAllServiceByDentistId(long id) {
