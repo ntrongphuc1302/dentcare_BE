@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.FirebaseToken;
 import online.be.entity.Account;
 import online.be.entity.DentalClinic;
+import online.be.entity.Room;
 import online.be.enums.Role;
 import online.be.exception.BadRequestException;
 import online.be.exception.NotFoundException;
@@ -13,6 +14,7 @@ import online.be.model.request.*;
 import online.be.model.response.AccountResponse;
 import online.be.repository.AuthenticationRepository;
 import online.be.repository.ClinicRepository;
+import online.be.repository.RoomRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -37,6 +39,9 @@ public class AuthenticationService implements UserDetailsService {
 
     @Autowired
     ClinicRepository clinicRepository;
+
+    @Autowired
+    RoomRepository roomRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -91,9 +96,20 @@ public class AuthenticationService implements UserDetailsService {
         account.setFullName(adminRegisterRequest.getFullName());
         // Gán Clinic ID cho tài khoản từ yêu cầu đăng ký
         DentalClinic clinic = null;
-        if (adminRegisterRequest.getRole() != Role.ADMIN) {
+        Room room = null;
+        if (adminRegisterRequest.getRole() != Role.ADMIN ||
+            adminRegisterRequest.getRole() != Role.CUSTOMER) {
             clinic = clinicRepository.findById(adminRegisterRequest.getClinicId())
                     .orElseThrow(() -> new NotFoundException("Cannot find this clinicId"));
+
+        }
+        if (adminRegisterRequest.getRole() == Role.DENTIST) {
+            room = roomRepository.findById(adminRegisterRequest.getRoomId());
+            if (room != null) {
+                account.setRoom(room);
+            } else {
+                throw new NotFoundException("Cannot find this Room");
+            }
         }
 
         account.setDentalClinic(clinic);
@@ -203,5 +219,10 @@ public class AuthenticationService implements UserDetailsService {
 
     public Account getCurrentAccount() {
         return (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
+
+    // Assuming we have a method like this in AuthenticationService
+    public void logout() {
+        SecurityContextHolder.clearContext();
     }
 }

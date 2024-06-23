@@ -50,6 +50,10 @@ public class Account implements UserDetails {
     @JoinColumn(name = "dental_clinic_id")
     private DentalClinic dentalClinic;
 
+    @ManyToOne
+    @JoinColumn(name = "room_id")
+    private Room room;
+
     @JsonIgnore
     @OneToMany(mappedBy = "account")
     private List<Patient> patients;
@@ -64,7 +68,11 @@ public class Account implements UserDetails {
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
-    List<Slot> slots;
+    List<WorkingDayOff> workingDayOffs;
+
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "account")
+//    List<Slot> slots;
 
 //    @JsonIgnore
 //    @OneToMany(mappedBy = "account")

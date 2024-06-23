@@ -33,5 +33,10 @@ public class Room {
 
     @JsonIgnore
     @OneToMany(mappedBy = "room")
-    List<Slot> slots;
+    private List<Account> accounts;
+
+
+//    @JsonIgnore
+//    @OneToMany(mappedBy = "room")
+//    List<Slot> slots;
 }

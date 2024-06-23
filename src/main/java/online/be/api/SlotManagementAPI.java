@@ -1,12 +1,15 @@
 package online.be.api;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import online.be.entity.Slot;
 import online.be.model.request.SlotRequest;
 import online.be.model.request.SlotUpdateRequest;
 import online.be.service.SlotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/slot")
@@ -26,20 +29,25 @@ public class SlotManagementAPI {
         return ResponseEntity.ok(slotService.getSlotByName(name));
     }
 
-    @GetMapping("/dentists/{id}")
-    public ResponseEntity getSlotsByDentist(@PathVariable long id) {
-        return ResponseEntity.ok(slotService.getSlotsByDentist(id));
+    @GetMapping("/available")
+    public ResponseEntity getAvailableSlots(@RequestParam long dentistId, @RequestParam String dayOff) {
+        return ResponseEntity.ok(slotService.getAvailableSlots(dentistId, dayOff));
     }
 
-    @GetMapping("/room/{id}")
-    public ResponseEntity getSlotsByRoom(@PathVariable long id) {
-        return ResponseEntity.ok(slotService.getSlotsByRoom(id));
-    }
+//    @GetMapping("/dentists/{id}")
+//    public ResponseEntity getSlotsByDentist(@PathVariable long id) {
+//        return ResponseEntity.ok(slotService.getSlotsByDentist(id));
+//    }
+//
+//    @GetMapping("/room/{id}")
+//    public ResponseEntity getSlotsByRoom(@PathVariable long id) {
+//        return ResponseEntity.ok(slotService.getSlotsByRoom(id));
+//    }
 
-    @GetMapping("/date/{date}")
-    public ResponseEntity getSlotsByDate(@PathVariable String date) {
-        return ResponseEntity.ok(slotService.getSlotsByDate(date));
-    }
+//    @GetMapping("/date/{date}")
+//    public ResponseEntity getSlotsByDate(@PathVariable String date) {
+//        return ResponseEntity.ok(slotService.getSlotsByDate(date));
+//    }
 
     @PostMapping
     public ResponseEntity createSlot(@RequestBody SlotRequest slotRequest) {
