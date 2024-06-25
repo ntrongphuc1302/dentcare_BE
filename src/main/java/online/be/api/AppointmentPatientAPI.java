@@ -26,6 +26,16 @@ public class AppointmentPatientAPI {
         return ResponseEntity.ok(appointmentPatientService.getAppointmentById(id));
     }
 
+    @GetMapping("/patient/{patientId}")
+    public ResponseEntity getAppointmentsByPatientId(@PathVariable long patientId) {
+        return ResponseEntity.ok(appointmentPatientService.getAppointmentsByPatientId(patientId));
+    }
+
+    @GetMapping("/dentist/{id}")
+    public ResponseEntity getAppointmentsDentistId(@PathVariable long id) {
+        return ResponseEntity.ok(appointmentPatientService.getAppointmentsDentistId(id));
+    }
+
     @PostMapping
     public ResponseEntity createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
         return ResponseEntity.ok(appointmentPatientService.createAppointment(appointmentRequest));

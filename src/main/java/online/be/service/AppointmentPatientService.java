@@ -1,14 +1,15 @@
 package online.be.service;
 
+import online.be.entity.Account;
 import online.be.entity.AppointmentPatient;
+import online.be.enums.CheckInStatus;
+import online.be.enums.Role;
 import online.be.enums.Status;
 import online.be.exception.DuplicateException;
+import online.be.exception.InvalidRoleException;
 import online.be.exception.NotFoundException;
 import online.be.model.request.AppointmentRequest;
-import online.be.repository.AppointmentPatientRepository;
-import online.be.repository.DentistServiceRepository;
-import online.be.repository.PatientRepository;
-import online.be.repository.SlotRepository;
+import online.be.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,18 +30,38 @@ public class AppointmentPatientService {
     @Autowired
     DentistServiceRepository dentistServiceRepository;
 
+    @Autowired
+    AccountRepository accountRepository;
+
+    @Autowired
+    AuthenticationService authenticationService;
+
     public List<AppointmentPatient> getAllAppointment() {
         return appointmentPatientRepository.findAll();
+    }
+
+    public List<AppointmentPatient> getAppointmentsByPatientId(long patientId) {
+        return appointmentPatientRepository.findByPatientId(patientId);
     }
 
     public AppointmentPatient getAppointmentById(long id) {
         return appointmentPatientRepository.findById(id);
     }
 
+    public List<AppointmentPatient> getAppointmentsDentistId(long id) {
+        Account account = accountRepository.findById(id);
+        if (account.getRole() == Role.DENTIST) {
+            return appointmentPatientRepository.findByDentistServices_AccountId(id);
+        } else {
+            throw new InvalidRoleException("The " + account.getRole() + " is invalid");
+        }
+    }
+
     public AppointmentPatient createAppointment(AppointmentRequest appointmentRequest) {
         AppointmentPatient appointmentPatient = appointmentPatientRepository.
-                findBySlotIdAndPatientId(appointmentRequest.getSlotId(), appointmentRequest.getPatientId());
-
+                findBySlotIdAndPatientIdAndDate(appointmentRequest.getSlotId(), appointmentRequest.getPatientId(),
+                        appointmentRequest.getDate());
+        Account account = authenticationService.getCurrentAccount();
         if (appointmentPatient == null) {
             AppointmentPatient appointment = new AppointmentPatient();
             var patient = patientRepository.findById(appointmentRequest.getPatientId());
@@ -49,8 +70,9 @@ public class AppointmentPatientService {
             appointment.setSlot(slot);
             var dentistService = dentistServiceRepository.findById(appointmentRequest.getDentistServiceId());
             appointment.setDentistServices(dentistService);
-            appointment.setStatus(Status.ACTIVE);
-
+            appointment.setDate(appointmentRequest.getDate());
+            appointment.setStatus(CheckInStatus.PROCESSING);
+            appointment.setAccount2(account);
             return appointmentPatientRepository.save(appointment);
         } else {
             throw new DuplicateException("These id have been existed");
@@ -79,11 +101,11 @@ public class AppointmentPatientService {
 
     public void deleteAppointment(AppointmentRequest appointmentRequest) {
         AppointmentPatient appointmentPatient = appointmentPatientRepository.
-                findBySlotIdAndPatientId(appointmentRequest.getSlotId(), appointmentRequest.getPatientId());
+                findById(appointmentRequest.getId());
 
         if (appointmentPatient != null) {
 
-            appointmentPatient.setStatus(Status.INACTIVE);
+            appointmentPatient.setStatus(CheckInStatus.CANCEL);
 
             appointmentPatientRepository.save(appointmentPatient);
         } else {

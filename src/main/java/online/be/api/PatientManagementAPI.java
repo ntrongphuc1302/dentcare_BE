@@ -32,6 +32,11 @@ public class PatientManagementAPI {
         return ResponseEntity.ok(patientService.getPatientByPhone(phone));
     }
 
+    @GetMapping("/customer/{id}")
+    public ResponseEntity getPatientsByAccountId(@PathVariable long id) {
+        return ResponseEntity.ok(patientService.getPatientsByAccountId(id));
+    }
+
     @PostMapping
     public ResponseEntity createPatient(@RequestBody PatientRequest patientRequest) {
         return ResponseEntity.ok(patientService.createPatient(patientRequest));
