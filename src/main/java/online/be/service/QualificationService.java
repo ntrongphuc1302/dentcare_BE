@@ -1,10 +1,14 @@
 package online.be.service;
 
+import online.be.entity.Account;
 import online.be.entity.Qualification;
 import online.be.enums.QualificationEnum;
+import online.be.enums.Role;
 import online.be.enums.Status;
+import online.be.exception.InvalidRoleException;
 import online.be.exception.NotFoundException;
 import online.be.model.request.QualificationRequest;
+import online.be.repository.AccountRepository;
 import online.be.repository.QualificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +20,9 @@ public class QualificationService {
 
     @Autowired
     QualificationRepository qualificationRepository;
+
+    @Autowired
+    AccountRepository accountRepository;
 
     public List<Qualification> getAllQualificationByManager() {
         return qualificationRepository.findAll();
@@ -36,10 +43,15 @@ public class QualificationService {
 
     public Qualification createQualification(QualificationRequest qualificationRequest) {
         Qualification qualification = new Qualification();
+        Account account = accountRepository.findById(qualificationRequest.getDentistId());
         qualification.setName(qualificationRequest.getName());
         qualification.setInstitution(qualificationRequest.getInstitution());
         qualification.setYearObtained(qualificationRequest.getYearObtained());
         qualification.setDescription(qualificationRequest.getDescription());
+        if (account.getRole() != Role.DENTIST) {
+            throw new InvalidRoleException("The "  + account.getRole() + " is invalid");
+        }
+        qualification.setAccount(account);
         qualification.setQualificationEnum(QualificationEnum.APPROVED);
         return qualificationRepository.save(qualification);
     }

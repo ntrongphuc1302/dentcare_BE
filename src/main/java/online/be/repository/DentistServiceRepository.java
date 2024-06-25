@@ -13,5 +13,4 @@ public interface DentistServiceRepository extends JpaRepository<DentistServices,
     List<DentistServices> findAllAccountByServiceDetailId(long id);
     List<DentistServices> findAllServiceDetailByAccountId(long id);
 
-
 }

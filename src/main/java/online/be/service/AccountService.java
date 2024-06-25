@@ -36,6 +36,10 @@ public class AccountService {
                 findByRoleAndDentalClinicIdAndDentistServices_ServiceDetailId(role, clinicId, serviceId);
     }
 
+//    public List<Account> getRoomsByDentistId(long id) {
+//        return accountRepository.findRoomsById(id);
+//    }
+
     public Account getAccountById(long id) {
         try {
             return accountRepository.findById(id);

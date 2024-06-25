@@ -38,6 +38,10 @@ public class PatientService {
         return patientRepository.findByPhoneNumber(phone);
     }
 
+    public List<Patient> getPatientsByAccountId(long id) {
+        return patientRepository.findByAccountId(id);
+    }
+
     public Patient createPatient(PatientRequest patientRequest) {
 //        Account account = authenticationRepository.findById(patientRequest.getAccountId()).get();
         Account account = authenticationService.getCurrentAccount();

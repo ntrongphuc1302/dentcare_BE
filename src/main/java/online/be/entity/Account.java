@@ -64,7 +64,11 @@ public class Account implements UserDetails {
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")
-    List<CheckIn> checkIns;
+    List<AppointmentPatient> appointmentPatients;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "account2")
+    List<AppointmentPatient> appointmentPatients2;
 
     @JsonIgnore
     @OneToMany(mappedBy = "account")

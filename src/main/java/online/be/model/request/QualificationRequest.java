@@ -13,6 +13,7 @@ public class QualificationRequest {
     String institution;
     int yearObtained;
     String description;
+    long dentistId;
     @Enumerated(EnumType.STRING)
     QualificationEnum qualificationEnum;
 }

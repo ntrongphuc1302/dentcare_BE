@@ -29,8 +29,8 @@ public class SlotManagementAPI {
         return ResponseEntity.ok(slotService.getSlotByName(name));
     }
 
-    @GetMapping("/available")
-    public ResponseEntity getAvailableSlots(@RequestParam long dentistId, @RequestParam String dayOff) {
+    @GetMapping("/available/dentist/{dentistId}/day-off/{dayOff}")
+    public ResponseEntity getAvailableSlots(@PathVariable long dentistId, @PathVariable String dayOff) {
         return ResponseEntity.ok(slotService.getAvailableSlots(dentistId, dayOff));
     }
 
