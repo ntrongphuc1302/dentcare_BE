@@ -32,6 +32,11 @@ public class DentalRoomManagementAPI {
         return ResponseEntity.ok(roomService.getRoomsByDentistId(id));
     }
 
+    @GetMapping("/clinic/{id}")
+    public ResponseEntity getRoomsByClinicId(@PathVariable long id) {
+        return ResponseEntity.ok(roomService.getRoomsByClinicId(id));
+    }
+
     @PostMapping
     public ResponseEntity createRoom(@RequestBody RoomRequest roomRequest) {
         return ResponseEntity.ok(roomService.createRoom(roomRequest));

@@ -37,6 +37,10 @@ public class RoomService {
         return roomRepository.findRoomsByAccountsId(id);
     }
 
+    public List<Room> getRoomsByClinicId(long id) {
+        return roomRepository.findByClinicId(id);
+    }
+
     public Room createRoom(RoomRequest roomRequest) {
         Room newRoom = new Room();
         newRoom.setName(roomRequest.getName());

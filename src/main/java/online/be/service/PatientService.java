@@ -39,7 +39,7 @@ public class PatientService {
     }
 
     public List<Patient> getPatientsByAccountId(long id) {
-        return patientRepository.findByAccountId(id);
+        return patientRepository.findByAccountIdAndPatientEnum(id, PatientEnum.ACTIVE);
     }
 
     public Patient createPatient(PatientRequest patientRequest) {

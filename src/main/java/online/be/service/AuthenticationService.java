@@ -97,8 +97,9 @@ public class AuthenticationService implements UserDetailsService {
         // Gán Clinic ID cho tài khoản từ yêu cầu đăng ký
         DentalClinic clinic = null;
         Room room = null;
-        if (adminRegisterRequest.getRole() != Role.ADMIN ||
-            adminRegisterRequest.getRole() != Role.CUSTOMER) {
+        if (adminRegisterRequest.getRole() == Role.MANAGER ||
+            adminRegisterRequest.getRole() == Role.STAFF ||
+            adminRegisterRequest.getRole() == Role.DENTIST) {
             clinic = clinicRepository.findById(adminRegisterRequest.getClinicId())
                     .orElseThrow(() -> new NotFoundException("Cannot find this clinicId"));
 
