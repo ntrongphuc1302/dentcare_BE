@@ -57,6 +57,10 @@ public class AppointmentPatientService {
         }
     }
 
+    public List<AppointmentPatient> getAppointmentsByPatientPhone(String phone) {
+        return appointmentPatientRepository.findByPatient_PhoneNumber(phone);
+    }
+
     public AppointmentPatient createAppointment(AppointmentRequest appointmentRequest) {
         AppointmentPatient appointmentPatient = appointmentPatientRepository.
                 findBySlotIdAndPatientIdAndDate(appointmentRequest.getSlotId(), appointmentRequest.getPatientId(),
@@ -78,6 +82,8 @@ public class AppointmentPatientService {
             throw new DuplicateException("These id have been existed");
         }
     }
+
+
 
     public AppointmentPatient updateAppointment(AppointmentRequest appointmentRequest) {
 //        AppointmentPatient appointmentPatient = appointmentPatientRepository.

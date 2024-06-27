@@ -27,6 +27,7 @@ public class Patient {
 
     String address;
 
+    @Column(unique = true)
     String phoneNumber;
 
     String email;
