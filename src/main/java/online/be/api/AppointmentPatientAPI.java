@@ -41,6 +41,14 @@ public class AppointmentPatientAPI {
         return ResponseEntity.ok(appointmentPatientService.getAppointmentsByPatientPhone(phone));
     }
 
+    @GetMapping("/patient/{pId}/dentist/{dId}/date/{date}")
+    public ResponseEntity getAppointmentsByPatientIDAndDentistIdAndDate
+            (@PathVariable long pId, @PathVariable long dId, @PathVariable String date) {
+
+        return ResponseEntity.ok
+                (appointmentPatientService.getAppointmentsByPatientIDAndDentistIdAndDate(pId, dId, date));
+    }
+
     @PostMapping
     public ResponseEntity createAppointment(@RequestBody AppointmentRequest appointmentRequest) {
         return ResponseEntity.ok(appointmentPatientService.createAppointment(appointmentRequest));

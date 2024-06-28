@@ -2,6 +2,7 @@ package online.be.service;
 
 import online.be.entity.Account;
 import online.be.entity.AppointmentPatient;
+import online.be.entity.Patient;
 import online.be.enums.CheckInStatus;
 import online.be.enums.Role;
 import online.be.enums.Status;
@@ -13,6 +14,8 @@ import online.be.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -48,6 +51,19 @@ public class AppointmentPatientService {
         return appointmentPatientRepository.findById(id);
     }
 
+    public List<AppointmentPatient> getAppointmentsByPatientIDAndDentistIdAndDate(long patientId, long denId, String date) {
+        Account account = accountRepository.findById(denId);
+        Patient patient = patientRepository.findById(patientId);
+        if (account.getRole() != Role.DENTIST) {
+            throw new InvalidRoleException("The " + account.getRole() + " is invalid");
+        }
+        if(patient == null) {
+            throw new NotFoundException("Cannot found this patient");
+        }
+        return appointmentPatientRepository.
+                findByPatientIdAndDentistServices_AccountIdAndDate(patientId, denId, date);
+    }
+
     public List<AppointmentPatient> getAppointmentsDentistId(long id) {
         Account account = accountRepository.findById(id);
         if (account.getRole() == Role.DENTIST) {
@@ -63,8 +79,10 @@ public class AppointmentPatientService {
 
     public AppointmentPatient createAppointment(AppointmentRequest appointmentRequest) {
         AppointmentPatient appointmentPatient = appointmentPatientRepository.
-                findBySlotIdAndPatientIdAndDate(appointmentRequest.getSlotId(), appointmentRequest.getPatientId(),
+                findBySlotIdAndPatientIdAndDate(appointmentRequest.getSlotId(),
+                        appointmentRequest.getPatientId(),
                         appointmentRequest.getDate());
+
         Account account = authenticationService.getCurrentAccount();
         if (appointmentPatient == null) {
             AppointmentPatient appointment = new AppointmentPatient();
@@ -83,11 +101,30 @@ public class AppointmentPatientService {
         }
     }
 
+    private boolean checkAppointmentAvailable(long id){
+        boolean result = false;
+        LocalDate currentDate = LocalDate.now();
+        AppointmentPatient appointmentPatient = appointmentPatientRepository.findById(id);
+        if (appointmentPatient != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate appointmentDate = LocalDate.parse(appointmentPatient.getDate(), formatter);
+
+            if (!appointmentDate.isBefore(currentDate)) {
+                result = true;
+            }
+        }
+
+        return result;
+    }
 
 
     public AppointmentPatient updateAppointment(AppointmentRequest appointmentRequest) {
 //        AppointmentPatient appointmentPatient = appointmentPatientRepository.
 //                findBySlotIdAndPatientId(appointmentRequest.getSlotId(), appointmentRequest.getPatientId());
+//       boolean check = checkAppointmentAvailable(appointmentRequest.getId());
+//        if (check == false) {
+//            throw new RuntimeException("Stupid");
+//        }
         AppointmentPatient appointmentPatient = appointmentPatientRepository.findById(appointmentRequest.getId());
         if (appointmentPatient != null) {
 

@@ -7,6 +7,7 @@ import online.be.entity.Account;
 import online.be.entity.DentalClinic;
 import online.be.entity.Room;
 import online.be.enums.Role;
+import online.be.enums.Status;
 import online.be.exception.BadRequestException;
 import online.be.exception.NotFoundException;
 import online.be.model.*;
@@ -64,6 +65,7 @@ public class AuthenticationService implements UserDetailsService {
         account.setRole(Role.CUSTOMER);
         account.setEmail(registerRequest.getEmail());
         account.setFullName(registerRequest.getFullName());
+        account.setStatus(Status.ACTIVE);
 
         try {
             EmailDetail emailDetail = new EmailDetail();
@@ -94,6 +96,7 @@ public class AuthenticationService implements UserDetailsService {
         account.setRole(adminRegisterRequest.getRole());
         account.setEmail(adminRegisterRequest.getEmail());
         account.setFullName(adminRegisterRequest.getFullName());
+        account.setStatus(Status.ACTIVE);
         // Gán Clinic ID cho tài khoản từ yêu cầu đăng ký
         DentalClinic clinic = null;
         Room room = null;
