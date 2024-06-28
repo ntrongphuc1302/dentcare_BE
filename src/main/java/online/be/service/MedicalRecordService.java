@@ -27,6 +27,18 @@ public class MedicalRecordService {
         return medicalRecordRepository.findAllByMedicalRecordEnum(MedicalRecordEnum.ACTIVE);
     }
 
+    public List<MedicalRecord> getRecordsByPatientPhone(String phone) {
+        return medicalRecordRepository.findByAppointmentPatient_PatientPhoneNumber(phone);
+    }
+
+    public List<MedicalRecord> getMedicalRecordsByPatientId(long id) {
+        return medicalRecordRepository.findByAppointmentPatient_PatientId(id);
+    }
+
+    public List<MedicalRecord> getAppointmentsByAppointmentPatientId(long id) {
+        return medicalRecordRepository.findByAppointmentPatientId(id);
+    }
+
     public MedicalRecord createMedicalRecord(MedicalRecordRequest medicalRecordRequest) {
         MedicalRecord medicalRecord = new MedicalRecord();
         AppointmentPatient appointmentPatient = appointmentPatientRepository.

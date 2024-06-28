@@ -21,6 +21,21 @@ public class MedicalRecordManagementAPI {
         return ResponseEntity.ok(medicalRecordService.getAllMedicalRecords());
     }
 
+    @GetMapping("/patient/phone/{phone}")
+    public ResponseEntity getRecordsByPatientPhone(@PathVariable String phone) {
+        return ResponseEntity.ok(medicalRecordService.getRecordsByPatientPhone(phone));
+    }
+
+    @GetMapping("/patient/id/{id}")
+    public ResponseEntity getRecordsByPatientId(@PathVariable long id) {
+        return ResponseEntity.ok(medicalRecordService.getMedicalRecordsByPatientId(id));
+    }
+
+    @GetMapping("/appointment/{id}")
+    public ResponseEntity getAppointmentsByAppointmentPatientId(@PathVariable long id) {
+        return ResponseEntity.ok(medicalRecordService.getAppointmentsByAppointmentPatientId(id));
+    }
+
     @PostMapping
     public ResponseEntity createMedicalRecord(@RequestBody MedicalRecordRequest medicalRecordRequest) {
         return ResponseEntity.ok(medicalRecordService.createMedicalRecord(medicalRecordRequest));
