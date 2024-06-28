@@ -64,4 +64,19 @@ public class AppointmentPatientAPI {
         appointmentPatientService.deleteAppointment(appointmentRequest);
         return ResponseEntity.ok("Delete successfully");
     }
+
+    @GetMapping("/patient/{id}/date/{date}")
+    public ResponseEntity getAppointmentsByPatientIdAndDate(@PathVariable long id, @PathVariable String date) {
+        return ResponseEntity.ok(appointmentPatientService.getAppointmentsByPatientIdAndDate(id, date));
+    }
+
+    @GetMapping("/date/{date}")
+    public ResponseEntity getAppointmentsByDate(@PathVariable String date) {
+        return ResponseEntity.ok(appointmentPatientService.getAppointmentsByDate(date));
+    }
+
+//    @GetMapping("/staff/{id}")
+//    public ResponseEntity getAppointmentsByStaffId(@PathVariable long id) {
+//        return ResponseEntity.ok(appointmentPatientService.getAppointmentsByStaffId(id));
+//    }
 }

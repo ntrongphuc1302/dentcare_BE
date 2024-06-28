@@ -155,4 +155,36 @@ public class AppointmentPatientService {
             throw new NotFoundException("These id have not been existed");
         }
     }
+
+    public List<AppointmentPatient> getAppointmentsByPatientIdAndDate(long id, String date) {
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate.parse(date, formatter);
+        } catch (Exception e) {
+            throw new RuntimeException("Date is invalid");
+        }
+        if (patientRepository.findById(id) == null){
+            throw new NotFoundException("Patient not found");
+        }
+        return appointmentPatientRepository.findByPatientIdAndDate(id, date);
+    }
+
+    public List<AppointmentPatient> getAppointmentsByDate(String date) {
+        try{
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+            LocalDate.parse(date, formatter);
+        } catch (Exception e) {
+            throw new RuntimeException("Date is invalid");
+        }
+        return appointmentPatientRepository.findByDate(date);
+    }
+
+//    public List<AppointmentPatient> getAppointmentsByStaffId(long id) {
+//        Account account = accountRepository.findById(id);
+//        if (account.getRole() == Role.STAFF) {
+//            return appointmentPatientRepository.findByStaff_Id(id);
+//        } else {
+//            throw new InvalidRoleException("The " + account.getRole() + " is invalid");
+//        }
+//    }
 }
