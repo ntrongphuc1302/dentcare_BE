@@ -78,4 +78,12 @@ public class MedicalRecordService {
             throw new NotFoundException("Medical Record not found!");
         }
     }
+
+    public List<MedicalRecord> getRecordsByDentistId(long id) {
+        try {
+            return medicalRecordRepository.findByDentistId(id);
+        } catch (Exception e) {
+            throw new NotFoundException("Dentist not found!");
+        }
+    }
 }

@@ -51,4 +51,9 @@ public class MedicalRecordManagementAPI {
         medicalRecordService.deleteMedicalRecord(id);
         return ResponseEntity.ok("Medical Record deleted successfully");
     }
+
+    @GetMapping("/dentist/{id}")
+    public ResponseEntity getRecordsByDentistId(@PathVariable long id) {
+        return ResponseEntity.ok(medicalRecordService.getRecordsByDentistId(id));
+    }
 }

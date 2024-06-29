@@ -35,4 +35,8 @@ public class MedicalRecord {
     @JsonIgnore
     @OneToMany(mappedBy = "medicalRecord")
     List<TreatmentPlan> treatmentPlans;
+
+    @ManyToOne
+    @JoinColumn(name = "dentist_id")
+    Account dentist;
 }
