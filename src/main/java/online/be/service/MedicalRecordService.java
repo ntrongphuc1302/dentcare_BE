@@ -1,27 +1,35 @@
 package online.be.service;
 
+import online.be.api.MedicalRecordManagementAPI;
+import online.be.entity.Account;
 import online.be.entity.AppointmentPatient;
+import online.be.entity.DentistServices;
 import online.be.entity.MedicalRecord;
 import online.be.enums.MedicalRecordEnum;
 import online.be.enums.Role;
+import online.be.exception.InvalidRoleException;
 import online.be.exception.NotFoundException;
 import online.be.model.request.MedicalRecordRequest;
 import online.be.model.request.MedicalRecordUpdateRequest;
+import online.be.repository.AccountRepository;
 import online.be.repository.AppointmentPatientRepository;
 import online.be.repository.MedicalRecordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
 @Service
 public class MedicalRecordService {
 
+    @Autowired
+    AccountRepository accountRepository;
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
 
     @Autowired
     private AppointmentPatientRepository appointmentPatientRepository;
+    @Autowired
+    private MedicalRecordManagementAPI medicalRecordManagementAPI;
 
     public List<MedicalRecord> getAllMedicalRecords() {
         return medicalRecordRepository.findAllByMedicalRecordEnum(MedicalRecordEnum.ACTIVE);
@@ -43,15 +51,22 @@ public class MedicalRecordService {
         MedicalRecord medicalRecord = new MedicalRecord();
         AppointmentPatient appointmentPatient = appointmentPatientRepository.
                 findById(medicalRecordRequest.getAppointmentPatientId());
-        medicalRecord.setName(medicalRecordRequest.getName());
-        medicalRecord.setNote(medicalRecordRequest.getNote());
-        medicalRecord.setDiagnosis(medicalRecordRequest.getDiagnosis());
-        medicalRecord.setMedicalRecordEnum(MedicalRecordEnum.ACTIVE);
         if (appointmentPatient != null) {
             medicalRecord.setAppointmentPatient(appointmentPatient);
         } else {
             throw new NotFoundException("Cannot found this Appointment");
         }
+        var account = accountRepository.findById(medicalRecordRequest.getDentistId());
+        if (account.getRole() == Role.DENTIST) {
+            medicalRecord.setDentist(account);
+        } else {
+            throw new InvalidRoleException("The " + account.getRole() + " role is invalid");
+        }
+        medicalRecord.setName(medicalRecordRequest.getName());
+        medicalRecord.setNote(medicalRecordRequest.getNote());
+        medicalRecord.setDiagnosis(medicalRecordRequest.getDiagnosis());
+        medicalRecord.setMedicalRecordEnum(MedicalRecordEnum.ACTIVE);
+
 
         return medicalRecordRepository.save(medicalRecord);
     }

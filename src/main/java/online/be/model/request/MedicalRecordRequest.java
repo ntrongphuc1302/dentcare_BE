@@ -10,4 +10,5 @@ public class MedicalRecordRequest {
     String note;
     String diagnosis;
     long appointmentPatientId;
+    long dentistId;
 }
