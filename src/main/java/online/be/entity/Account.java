@@ -87,7 +87,7 @@ public class Account implements UserDetails {
     List<Qualification> qualifications;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "dentist")
     List<MedicalRecord> medicalRecords;
 
     @Override
