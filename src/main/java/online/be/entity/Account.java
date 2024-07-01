@@ -86,6 +86,10 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "account")
     List<Qualification> qualifications;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "account")
+    List<MedicalRecord> medicalRecords;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.toString()));

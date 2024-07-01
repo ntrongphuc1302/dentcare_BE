@@ -22,7 +22,7 @@ import java.util.List;
 public class MedicalRecordService {
 
     @Autowired
-    AccountRepository accountRepository;
+    AuthenticationService authenticationService;
     @Autowired
     private MedicalRecordRepository medicalRecordRepository;
 
@@ -56,12 +56,11 @@ public class MedicalRecordService {
         } else {
             throw new NotFoundException("Cannot found this Appointment");
         }
-        var account = accountRepository.findById(medicalRecordRequest.getDentistId());
-        if (account.getRole() == Role.DENTIST) {
-            medicalRecord.setDentist(account);
-        } else {
+        Account account = authenticationService.getCurrentAccount();
+        if (account.getRole() != Role.DENTIST) {
             throw new InvalidRoleException("The " + account.getRole() + " role is invalid");
         }
+        medicalRecord.setDentist(account);
         medicalRecord.setName(medicalRecordRequest.getName());
         medicalRecord.setNote(medicalRecordRequest.getNote());
         medicalRecord.setDiagnosis(medicalRecordRequest.getDiagnosis());
