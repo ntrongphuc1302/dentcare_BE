@@ -156,6 +156,7 @@ public class AuthenticationService implements UserDetailsService {
             accountResponse.setPhone(account.getPhone());
             accountResponse.setToken(tokenService.generateToken(account));
             accountResponse.setRole(account.getRole());
+            accountResponse.setDentalClinic(account.getDentalClinic());
 //            return accountResponse;
 
         }catch (FirebaseAuthException e){
@@ -181,7 +182,7 @@ public class AuthenticationService implements UserDetailsService {
         accountResponse.setFullName(account.getFullName());
         accountResponse.setRole(account.getRole());
         accountResponse.setId(account.getId());
-
+        accountResponse.setDentalClinic(account.getDentalClinic());
         return accountResponse;
     }
 

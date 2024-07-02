@@ -2,6 +2,7 @@ package online.be.api;
 
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import online.be.enums.CheckInStatus;
 import online.be.model.request.AppointmentRequest;
 import online.be.service.AppointmentPatientService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,9 +60,9 @@ public class AppointmentPatientAPI {
         return ResponseEntity.ok(appointmentPatientService.updateAppointment(appointmentRequest));
     }
 
-    @DeleteMapping
-    public ResponseEntity deleteAppointment(@RequestBody AppointmentRequest appointmentRequest) {
-        appointmentPatientService.deleteAppointment(appointmentRequest);
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteAppointment(@PathVariable long id) {
+        appointmentPatientService.deleteAppointment(id);
         return ResponseEntity.ok("Delete successfully");
     }
 
@@ -75,8 +76,13 @@ public class AppointmentPatientAPI {
         return ResponseEntity.ok(appointmentPatientService.getAppointmentsByDate(date));
     }
 
-//    @GetMapping("/staff/{id}")
-//    public ResponseEntity getAppointmentsByStaffId(@PathVariable long id) {
-//        return ResponseEntity.ok(appointmentPatientService.getAppointmentsByStaffId(id));
-//    }
+    @GetMapping("/staff/{id}")
+    public ResponseEntity getAppointmentsByStaffId(@PathVariable long id) {
+        return ResponseEntity.ok(appointmentPatientService.getAppointmentsByStaffId(id));
+    }
+
+    @PatchMapping("/check-in-by-staff")
+    public ResponseEntity checkInByStaff(@RequestParam long id, @RequestParam CheckInStatus status) {
+        return ResponseEntity.ok(appointmentPatientService.checkInByStaff(id, status));
+    }
 }
