@@ -35,7 +35,7 @@ public class MedicalRecordService {
         return medicalRecordRepository.findByAppointmentPatient_PatientId(id);
     }
 
-    public List<MedicalRecord> getAppointmentsByAppointmentPatientId(long id) {
+    public MedicalRecord getAppointmentsByAppointmentPatientId(long id) {
         return medicalRecordRepository.findByAppointmentPatientId(id);
     }
 
