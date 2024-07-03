@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -30,7 +31,7 @@ public class SlotManagementAPI {
     }
 
     @GetMapping("/available/dentist/{dentistId}/day-off/{dayOff}")
-    public ResponseEntity getAvailableSlots(@PathVariable long dentistId, @PathVariable String dayOff) {
+    public ResponseEntity getAvailableSlots(@PathVariable long dentistId, @PathVariable LocalDate dayOff) {
         return ResponseEntity.ok(slotService.getAvailableSlots(dentistId, dayOff));
     }
 

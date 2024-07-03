@@ -35,6 +35,10 @@ public class MedicalRecordService {
         return medicalRecordRepository.findAllByMedicalRecordEnum(MedicalRecordEnum.ACTIVE);
     }
 
+    public MedicalRecord getRecordById(long id) {
+        return medicalRecordRepository.findById(id);
+    }
+
     public List<MedicalRecord> getRecordsByPatientPhone(String phone) {
         return medicalRecordRepository.findByAppointmentPatient_PatientPhoneNumber(phone);
     }
@@ -51,8 +55,10 @@ public class MedicalRecordService {
         MedicalRecord medicalRecord = new MedicalRecord();
         AppointmentPatient appointmentPatient = appointmentPatientRepository.
                 findById(medicalRecordRequest.getAppointmentPatientId());
+
         if (appointmentPatient != null) {
             medicalRecord.setAppointmentPatient(appointmentPatient);
+
         } else {
             throw new NotFoundException("Cannot found this Appointment");
         }
@@ -65,6 +71,7 @@ public class MedicalRecordService {
         medicalRecord.setNote(medicalRecordRequest.getNote());
         medicalRecord.setDiagnosis(medicalRecordRequest.getDiagnosis());
         medicalRecord.setMedicalRecordEnum(MedicalRecordEnum.ACTIVE);
+
 
 
         return medicalRecordRepository.save(medicalRecord);

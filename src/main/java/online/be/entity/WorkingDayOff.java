@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
@@ -15,7 +17,7 @@ public class WorkingDayOff {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    String dayOff;
+    LocalDate dayOff;
 
     @ManyToOne
     @JoinColumn(name = "dentist_id")

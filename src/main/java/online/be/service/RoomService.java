@@ -62,6 +62,16 @@ public class RoomService {
         }
     }
 
+    public Room activeRoom(long id) {
+        Room room = roomRepository.findById(id);
+        if (room != null) {
+            room.setRoomEnum(RoomEnum.ACTIVE);
+            return roomRepository.save(room);
+        } else {
+            throw new NotFoundException("Room not found with id " + id);
+        }
+    }
+
     public void deleteRoom(long id) {
         Room existingRoom = roomRepository.findById(id);
         if (existingRoom != null) {
