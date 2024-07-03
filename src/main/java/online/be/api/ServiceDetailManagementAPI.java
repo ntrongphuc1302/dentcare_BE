@@ -27,13 +27,19 @@ public class ServiceDetailManagementAPI {
         return ResponseEntity.ok(serviceDetailService.getServiceById(id));
     }
 
+    @GetMapping("/name/{name}")
+    public  ResponseEntity getServiceByKeyName(@PathVariable String name) {
+        return ResponseEntity.ok(serviceDetailService.getServiceByKeyName(name));
+    }
+
     @PostMapping
     public ResponseEntity createDentistService(@RequestBody ServiceDetailRequest serviceDetailRequest) {
         return ResponseEntity.ok(serviceDetailService.createService(serviceDetailRequest));
     }
 
     @PutMapping
-    public ResponseEntity updateDentistService(@RequestBody ServiceDetailUpdateRequest serviceDetailUpdateRequest) {
+    public ResponseEntity updateDentistService
+            (@RequestBody ServiceDetailUpdateRequest serviceDetailUpdateRequest) {
         return ResponseEntity.ok(serviceDetailService.updateDentistService(serviceDetailUpdateRequest));
     }
 

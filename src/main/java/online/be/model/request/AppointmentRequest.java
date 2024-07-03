@@ -6,6 +6,9 @@ import lombok.Data;
 import online.be.enums.CheckInStatus;
 import online.be.enums.Status;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 @Data
 public class AppointmentRequest {
 
@@ -13,7 +16,7 @@ public class AppointmentRequest {
     long slotId;
     long patientId;
     long dentistServiceId;
-    String date;
+    LocalDate date;
     long staffId;
     long cusId;
     @Enumerated(EnumType.STRING)

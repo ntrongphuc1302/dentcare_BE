@@ -7,8 +7,10 @@ import online.be.enums.Status;
 import online.be.exception.DuplicateException;
 import online.be.exception.InvalidRoleException;
 import online.be.exception.NotFoundException;
+import online.be.model.SlotIdCountDTO;
 import online.be.model.request.SlotRequest;
 import online.be.model.request.SlotUpdateRequest;
+import online.be.model.response.SlotResponse;
 import online.be.repository.AccountRepository;
 import online.be.repository.RoomRepository;
 import online.be.repository.SlotRepository;
@@ -17,7 +19,11 @@ import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class SlotService {
@@ -47,9 +53,60 @@ public class SlotService {
         return slotRepository.findSlotByName(name);
     }
 
-    public List<Slot> getAvailableSlots(long dentistId, String dayOff) {
-        List<Long> excludedSlotIds = workingDayOffRepository.findSlotIdsByDentistAndDayOff(dentistId, dayOff);
-        return slotRepository.findAvailableSlotsExcluding(excludedSlotIds);
+    public SlotResponse mapperSlot(Slot slot){
+        SlotResponse slotResponse = new SlotResponse();
+        slotResponse.setId(slot.getId());
+        slotResponse.setName(slot.getName());
+        slotResponse.setStartTime(slot.getStartTime());
+        slotResponse.setEndTime(slot.getEndTime());
+        slotResponse.setMaxPatient(slot.getMaxPatient());
+        slotResponse.setAvailable(true);
+        return slotResponse;
+    }
+
+    public List<SlotResponse> getAvailableSlots(long dentistId, LocalDate dayOff) {
+        List<Long> excludedSlotIds = workingDayOffRepository.
+                findSlotIdsByDentistAndDayOff(dentistId, dayOff);
+
+        List<Slot> listSlot = slotRepository.findAll();
+
+        List<SlotResponse> slotResponses =  new ArrayList<>();
+
+        List<SlotIdCountDTO> list = new ArrayList<>();
+
+        List<Object[]> results = slotRepository.findCountSlot(dentistId,dayOff);
+        list = results.stream()
+                .map(result -> new SlotIdCountDTO((Long) result[0], (Long) result[1]))
+                .collect(Collectors.toList());
+
+        if(!excludedSlotIds.isEmpty()){
+           List<Slot> listOffDate = slotRepository.findUnavailableSlotsExcluding(excludedSlotIds);
+           for(Slot slot: listSlot){
+               SlotResponse slotResponse = mapperSlot(slot);
+               for(Slot offdate: listOffDate){
+                   if(slot.getId() == offdate.getId()){
+                       slotResponse.setAvailable(false);
+                   }
+               }
+               slotResponses.add(slotResponse);
+           }
+
+        }else{
+            for(Slot slot: listSlot) {
+                SlotResponse slotResponse = mapperSlot(slot);
+                slotResponses.add(slotResponse);
+            }
+
+        }
+
+        for(SlotResponse slotResponse: slotResponses){
+            for (SlotIdCountDTO slotIdCountDTO: list){
+                if(slotResponse.getId() == slotIdCountDTO.getSlotId() && slotIdCountDTO.getCount() >= 3){
+                    slotResponse.setAvailable(false);
+                }
+            }
+        }
+        return slotResponses;
     }
 
 //    public List<Slot> getSlotsByDentist(long id ) {

@@ -10,4 +10,6 @@ public interface ServiceDetailRepository extends JpaRepository<ServiceDetail, Lo
     ServiceDetail findById(long id);
     List<ServiceDetail> findAllByServiceDetailEnum(ServiceDetailEnum serviceDetailEnum);
     List<ServiceDetail> findServiceDetailsByDentalClinicsId(long id);
+    List<ServiceDetail> findByName(String name);
+    List<ServiceDetail> findByNameContaining(String keyWord);
 }

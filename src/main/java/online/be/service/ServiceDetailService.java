@@ -26,7 +26,11 @@ public class ServiceDetailService {
         return serviceDetailRepository.findById(id);
     }
 
-public ServiceDetail createService(ServiceDetailRequest serviceDetailRequest) {
+    public List<ServiceDetail> getServiceByKeyName(String key) {
+        return serviceDetailRepository.findByNameContaining(key);
+    }
+
+    public ServiceDetail createService(ServiceDetailRequest serviceDetailRequest) {
         ServiceDetail service = new ServiceDetail();
         service.setName(serviceDetailRequest.getName());
         service.setPrice(serviceDetailRequest.getPrice());
@@ -39,7 +43,7 @@ public ServiceDetail createService(ServiceDetailRequest serviceDetailRequest) {
         }
     }
 
-public ServiceDetail updateDentistService(ServiceDetailUpdateRequest serviceDetailUpdateRequest) {
+    public ServiceDetail updateDentistService(ServiceDetailUpdateRequest serviceDetailUpdateRequest) {
         ServiceDetail service = serviceDetailRepository.findById(serviceDetailUpdateRequest.getId());
         if (service != null) {
             service.setName(serviceDetailUpdateRequest.getName());
@@ -52,7 +56,7 @@ public ServiceDetail updateDentistService(ServiceDetailUpdateRequest serviceDeta
         }
     }
 
-public void deleteDentistService(long id) {
+    public void deleteDentistService(long id) {
         ServiceDetail service = serviceDetailRepository.findById(id);
         if (service != null) {
             service.setServiceDetailEnum(ServiceDetailEnum.INACTIVE);
