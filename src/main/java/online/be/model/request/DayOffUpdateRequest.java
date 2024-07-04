@@ -1,11 +1,13 @@
 package online.be.model.request;
 
-import lombok.Data;
-
+import lombok.Getter;
+import lombok.Setter;
 import java.time.LocalDate;
 
-@Data
-public class DayOffRequest {
+@Getter
+@Setter
+public class DayOffUpdateRequest {
+    long id;
     LocalDate dayOff;
     long dentistId;
     long slotId;
