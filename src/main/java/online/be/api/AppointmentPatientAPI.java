@@ -114,4 +114,10 @@ public class AppointmentPatientAPI {
     public ResponseEntity checkInByStaff(@PathVariable long id, @PathVariable CheckInStatus status) {
         return ResponseEntity.ok(appointmentPatientService.checkInByStaff(id, status));
     }
+
+    @GetMapping("/clinic/{id}/date/{date}")
+    public ResponseEntity getAppointmentByDentalClinicIdAndDate(@PathVariable long id,
+                                                                @PathVariable LocalDate date) {
+        return ResponseEntity.ok(appointmentPatientService.getAppointmentByDentalClinicIdAndDate(id, date));
+    }
 }

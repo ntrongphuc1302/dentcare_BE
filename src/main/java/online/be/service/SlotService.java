@@ -65,8 +65,6 @@ public class SlotService {
     }
 
     public List<SlotResponse> getAvailableSlots(long dentistId, LocalDate dayOff) {
-        List<Long> excludedSlotIds = workingDayOffRepository.
-                findSlotIdsByDentistAndDayOff(dentistId, dayOff);
 
         List<Slot> listSlot = slotRepository.findAll();
 
@@ -79,33 +77,30 @@ public class SlotService {
                 .map(result -> new SlotIdCountDTO((Long) result[0], (Long) result[1]))
                 .collect(Collectors.toList());
 
-        if(!excludedSlotIds.isEmpty()){
-           List<Slot> listOffDate = slotRepository.findUnavailableSlotsExcluding(excludedSlotIds);
-           for(Slot slot: listSlot){
-               SlotResponse slotResponse = mapperSlot(slot);
-               for(Slot offdate: listOffDate){
-                   if(slot.getId() == offdate.getId()){
-                       slotResponse.setAvailable(false);
+        List<Long> excludedSlotIds = workingDayOffRepository.
+                findSlotIdsByDentistAndDayOff(dentistId, dayOff);
+
+        List<Slot> listOffDate = slotRepository.findUnavailableSlotsExcluding(excludedSlotIds);
+
+        // gọn hơn nữa <3
+
+        for(Slot slot: listSlot){
+           SlotResponse slotResponse = mapperSlot(slot);
+                   if(!listOffDate.isEmpty()){
+                       for(Slot offdate: listOffDate){
+                           if(slot.getId() == offdate.getId()){
+                               slotResponse.setAvailable(false);
+                           }
+                       }
                    }
-               }
-               slotResponses.add(slotResponse);
-           }
-
-        }else{
-            for(Slot slot: listSlot) {
-                SlotResponse slotResponse = mapperSlot(slot);
-                slotResponses.add(slotResponse);
-            }
-
+                    for (SlotIdCountDTO slotIdCountDTO: list){
+                        if(slot.getId() == slotIdCountDTO.getSlotId() && slotIdCountDTO.getCount() >= 3){
+                            slotResponse.setAvailable(false);
+                        }
+                    }
+           slotResponses.add(slotResponse);
         }
 
-        for(SlotResponse slotResponse: slotResponses){
-            for (SlotIdCountDTO slotIdCountDTO: list){
-                if(slotResponse.getId() == slotIdCountDTO.getSlotId() && slotIdCountDTO.getCount() >= 3){
-                    slotResponse.setAvailable(false);
-                }
-            }
-        }
         return slotResponses;
     }
 
