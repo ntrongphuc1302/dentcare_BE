@@ -16,17 +16,17 @@ public class WorkingDayOffAPI {
 
     @Autowired
     WorkingDayOffService workingDayOffService;
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity createWorkingDayOff(@RequestBody DayOffRequest dayOffRequest) {
         return ResponseEntity.ok(workingDayOffService.createWorkingDayOff(dayOffRequest));
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public ResponseEntity getAllWorkingDayOffs() {
         return ResponseEntity.ok(workingDayOffService.getAllWorkingDayOffs());
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping
     public ResponseEntity updateWorkingDayOff(@PathVariable long id, @RequestBody DayOffRequest dayOffRequest) {
         return ResponseEntity.ok(workingDayOffService.updateWorkingDayOff(id, dayOffRequest));
     }
