@@ -7,6 +7,7 @@ import online.be.enums.Role;
 import online.be.exception.InvalidRoleException;
 import online.be.exception.NotFoundException;
 import online.be.model.request.DayOffRequest;
+import online.be.model.request.DayOffUpdateRequest;
 import online.be.repository.AccountRepository;
 import online.be.repository.SlotRepository;
 import online.be.repository.WorkingDayOffRepository;
@@ -57,24 +58,24 @@ public class WorkingDayOffService {
         return workingDayOffRepository.save(workingDayOff);
     }
 
-    public WorkingDayOff updateWorkingDayOff(long id, DayOffRequest dayOffRequest) {
-        WorkingDayOff workingDayOff = workingDayOffRepository.findById(id);
-        Account account = accountRepository.findById(dayOffRequest.getDentistId());
-        Slot slot = slotRepository.findById(dayOffRequest.getSlotId());
+    public WorkingDayOff updateWorkingDayOff(DayOffUpdateRequest dayOffUpdateRequest) {
+        WorkingDayOff workingDayOff = workingDayOffRepository.findById(dayOffUpdateRequest.getId());
+        Account account = accountRepository.findById(dayOffUpdateRequest.getDentistId());
+        Slot slot = slotRepository.findById(dayOffUpdateRequest.getSlotId());
 
         if (workingDayOff == null) {
-            throw new NotFoundException("Working day off with id " + id + " not found.");
+            throw new NotFoundException("Working day off with id " + dayOffUpdateRequest.getId() + " not found.");
         }
         if (account == null) {
-            throw new NotFoundException("Account with id " + dayOffRequest.getDentistId() + " not found.");
+            throw new NotFoundException("Account with id " + dayOffUpdateRequest.getDentistId() + " not found.");
         }
         if (slot == null) {
-            throw new NotFoundException("Slot with id " + dayOffRequest.getSlotId() + " not found.");
+            throw new NotFoundException("Slot with id " + dayOffUpdateRequest.getSlotId() + " not found.");
         }
         if (account.getRole() != Role.DENTIST) {
-            throw new InvalidRoleException("Account with id " + dayOffRequest.getDentistId() + " is not a dentist.");
+            throw new InvalidRoleException("Account with id " + dayOffUpdateRequest.getDentistId() + " is not a dentist.");
         }
-        workingDayOff.setDayOff(dayOffRequest.getDayOff());
+        workingDayOff.setDayOff(dayOffUpdateRequest.getDayOff());
         workingDayOff.setAccount(account);
         workingDayOff.setSlot(slot);
 

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import online.be.entity.Account;
 import online.be.entity.WorkingDayOff;
 import online.be.model.request.DayOffRequest;
+import online.be.model.request.DayOffUpdateRequest;
 import online.be.service.WorkingDayOffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +28,8 @@ public class WorkingDayOffAPI {
     }
 
     @PutMapping
-    public ResponseEntity updateWorkingDayOff(@PathVariable long id, @RequestBody DayOffRequest dayOffRequest) {
-        return ResponseEntity.ok(workingDayOffService.updateWorkingDayOff(id, dayOffRequest));
+    public ResponseEntity updateWorkingDayOff(@RequestBody DayOffUpdateRequest dayOffUpdateRequest) {
+        return ResponseEntity.ok(workingDayOffService.updateWorkingDayOff(dayOffUpdateRequest));
     }
 
     @GetMapping("/{id}")
