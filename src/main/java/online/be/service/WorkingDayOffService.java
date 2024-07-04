@@ -14,6 +14,7 @@ import online.be.repository.WorkingDayOffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,6 +32,15 @@ public class WorkingDayOffService {
 
     public List<WorkingDayOff> getAllWorkingDayOffs() {
         return workingDayOffRepository.findAll();
+    }
+
+    public List<WorkingDayOff> getByDentistAndDayOff(long id, LocalDate date) {
+        Account account = accountRepository.findById(id);
+        if (account.getRole() != Role.DENTIST) {
+            throw new InvalidRoleException("The role " + account.getRole() + " is invalid.");
+        }
+
+        return workingDayOffRepository.findByAccountIdAndDayOff(id, date);
     }
 
     public WorkingDayOff createWorkingDayOff(DayOffRequest dayOffRequest) {

@@ -13,8 +13,10 @@ public interface WorkingDayOffRepository extends JpaRepository<WorkingDayOff, Lo
 
     @Query("SELECT w.slot.id FROM WorkingDayOff w WHERE w.account.id = :dentistId AND w.dayOff = :dayOff")
     List<Long> findSlotIdsByDentistAndDayOff(long dentistId, LocalDate dayOff);
+
+    List<WorkingDayOff> findByAccountIdAndDayOff(long id, LocalDate date);
     WorkingDayOff findById(long id);
     List<WorkingDayOff> findByAccount(Account account);
-
     List<WorkingDayOff> findBySlot(Slot slot);
+
 }
