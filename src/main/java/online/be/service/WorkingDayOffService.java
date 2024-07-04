@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WorkingDayOffService {
@@ -54,5 +55,66 @@ public class WorkingDayOffService {
         workingDayOff.setSlot(slot);
 
         return workingDayOffRepository.save(workingDayOff);
+    }
+
+    public WorkingDayOff updateWorkingDayOff(long id, DayOffRequest dayOffRequest) {
+        WorkingDayOff workingDayOff = workingDayOffRepository.findById(id);
+        Account account = accountRepository.findById(dayOffRequest.getDentistId());
+        Slot slot = slotRepository.findById(dayOffRequest.getSlotId());
+
+        if (workingDayOff == null) {
+            throw new NotFoundException("Working day off with id " + id + " not found.");
+        }
+        if (account == null) {
+            throw new NotFoundException("Account with id " + dayOffRequest.getDentistId() + " not found.");
+        }
+        if (slot == null) {
+            throw new NotFoundException("Slot with id " + dayOffRequest.getSlotId() + " not found.");
+        }
+        if (account.getRole() != Role.DENTIST) {
+            throw new InvalidRoleException("Account with id " + dayOffRequest.getDentistId() + " is not a dentist.");
+        }
+        workingDayOff.setDayOff(dayOffRequest.getDayOff());
+        workingDayOff.setAccount(account);
+        workingDayOff.setSlot(slot);
+
+        return workingDayOffRepository.save(workingDayOff);
+    }
+
+    public WorkingDayOff getWorkingDayOffById(long id) {
+        try {
+            return workingDayOffRepository.findById(id);
+        } catch (Exception e) {
+            throw new NotFoundException("Working day off with id " + id + " not found.");
+        }
+    }
+
+    public List<WorkingDayOff> getWorkingDayOffByDentistId(long id) {
+        //verify if the dentist exists
+        Account account = accountRepository.findById(id);
+        if (account == null) {
+            throw new NotFoundException("Account with id " + id + " not found.");
+        }
+        //verify if the account is a dentist
+        if (account.getRole() != Role.DENTIST) {
+            throw new InvalidRoleException("Account with id " + id + " is not a dentist.");
+        }
+        try{
+            return workingDayOffRepository.findByAccount(account);
+        } catch (Exception e) {
+            throw new NotFoundException("Working day off not found!");
+        }
+    }
+
+    public List<WorkingDayOff> getWorkingDayOffBySlotId(long id) {
+        Slot slot = slotRepository.findById(id);
+        if (slot == null) {
+            throw new NotFoundException("Slot with id " + id + " not found.");
+        }
+        try {
+            return workingDayOffRepository.findBySlot(slot);
+        } catch (Exception e) {
+            throw new NotFoundException("Working day off not found!");
+        }
     }
 }
