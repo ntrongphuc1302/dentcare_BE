@@ -10,4 +10,5 @@ public interface QualificationRepository extends JpaRepository<Qualification, Lo
     Qualification findById(long id);
 //    Qualification findByName(String name);
     List<Qualification> findAllByQualificationEnum(QualificationEnum qualificationEnum);
+    List<Qualification> findByAccountId(long id);
 }

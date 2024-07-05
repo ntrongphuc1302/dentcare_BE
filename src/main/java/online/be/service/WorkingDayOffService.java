@@ -34,7 +34,7 @@ public class WorkingDayOffService {
         return workingDayOffRepository.findAll();
     }
 
-    public List<WorkingDayOff> getByDentistAndDayOff(long id, LocalDate date) {
+    public WorkingDayOff getByDentistAndDayOff(long id, LocalDate date) {
         Account account = accountRepository.findById(id);
         if (account.getRole() != Role.DENTIST) {
             throw new InvalidRoleException("The role " + account.getRole() + " is invalid.");
@@ -111,7 +111,7 @@ public class WorkingDayOffService {
             throw new InvalidRoleException("Account with id " + id + " is not a dentist.");
         }
         try{
-            return workingDayOffRepository.findByAccount(account);
+            return workingDayOffRepository.findByAccountId(id);
         } catch (Exception e) {
             throw new NotFoundException("Working day off not found!");
         }
@@ -123,7 +123,7 @@ public class WorkingDayOffService {
             throw new NotFoundException("Slot with id " + id + " not found.");
         }
         try {
-            return workingDayOffRepository.findBySlot(slot);
+            return workingDayOffRepository.findBySlotId(id);
         } catch (Exception e) {
             throw new NotFoundException("Working day off not found!");
         }

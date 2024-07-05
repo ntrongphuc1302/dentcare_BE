@@ -7,12 +7,15 @@ import online.be.entity.Patient;
 import online.be.enums.CheckInStatus;
 import online.be.enums.Role;
 import online.be.enums.Status;
+import online.be.exception.BadRequestException;
 import online.be.exception.DuplicateException;
 import online.be.exception.InvalidRoleException;
 import online.be.exception.NotFoundException;
+import online.be.model.EmailDetail;
 import online.be.model.request.AppointmentRequest;
 import online.be.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -44,6 +47,11 @@ public class AppointmentPatientService {
 
     @Autowired
     ClinicRepository clinicRepository;
+
+    @Autowired
+    TokenService tokenService;
+    @Autowired
+    EmailService emailService;
 
     public List<AppointmentPatient> getAllAppointment() {
         List<AppointmentPatient> appointmentPatients = appointmentPatientRepository.findAll();
@@ -112,10 +120,60 @@ public class AppointmentPatientService {
             appointment.setDate(appointmentRequest.getDate());
             appointment.setStatus(CheckInStatus.PROCESSING);
             appointment.setAccount2(account);
+
+            sendEmailAfterCompleted(account);
             return appointmentPatientRepository.save(appointment);
         } else {
             throw new DuplicateException("These id have been existed");
         }
+    }
+
+    // thong bao cho nguoi dat lich ngay sau khi hoan thanh dat lich
+    public void sendEmailAfterCompleted(Account account) {
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setRecipient(account.getEmail());
+//        emailDetail.setFullName(account.getFullName());
+        emailDetail.setSubject("Successful Appointment for account " + account.getEmail() + "!");
+        emailDetail.setMsgBody("Chuc mung ban sap di kham rang!");
+        emailDetail.setButtonValue("View Web");
+        emailDetail.setLink("http://dentcare.website");
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                emailService.sendMailTemplate(emailDetail);
+            }
+        };
+        new Thread(r).start();
+    }
+
+    //thong bao truoc 1 ngay
+    @Scheduled(cron = "0 0 0 * * ?") //dem nguoc luc 12h dem moi ngay
+    public void checkAndNotifyAppointment(){
+        List<AppointmentPatient> accList = appointmentPatientRepository.findByStatus(CheckInStatus.PROCESSING);
+        for(AppointmentPatient customer : accList){
+            if(customer.getDate() != null && customer.getDate().isBefore(LocalDate.now())){
+                Account cus = customer.getAccount2();
+                sendEmailBeforeAppointmentDateOneDay(cus);
+            }
+        }
+    }
+
+    public void sendEmailBeforeAppointmentDateOneDay(Account account) {
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setRecipient(account.getEmail());
+//        emailDetail.setFullName(account.getFullName());
+        emailDetail.setSubject("Tomorrow appointment for account " + account.getEmail() + "!");
+        emailDetail.setMsgBody("Chuc mung ban sap di kham rang!");
+        emailDetail.setButtonValue("CHECK NOW");
+        emailDetail.setLink("http://dentcare.website");
+//        emailService.sendMailTemplate(emailDetail);
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                emailService.sendMailTemplate(emailDetail);
+            }
+        };
+        new Thread(r).start();
     }
 
 //    private boolean checkAppointmentAvailable(long id){
