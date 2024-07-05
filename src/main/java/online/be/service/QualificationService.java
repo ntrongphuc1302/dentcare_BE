@@ -41,6 +41,11 @@ public class QualificationService {
         }
     }
 
+    public List<Qualification> getQualificationByDentistId(long id) {
+        return qualificationRepository.findByAccountId(id);
+    }
+
+
     public Qualification createQualification(QualificationRequest qualificationRequest) {
         Qualification qualification = new Qualification();
         Account account = accountRepository.findById(qualificationRequest.getDentistId());

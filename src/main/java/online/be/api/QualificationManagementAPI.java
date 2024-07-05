@@ -30,6 +30,11 @@ public class QualificationManagementAPI {
         return ResponseEntity.ok(qualificationService.getQualificationById(id));
     }
 
+    @GetMapping("/dentist/{id}")
+    public ResponseEntity getQualificationByDentistId(@PathVariable long id) {
+        return ResponseEntity.ok(qualificationService.getQualificationByDentistId(id));
+    }
+
     @PostMapping
     public ResponseEntity createQualification(@RequestBody QualificationRequest qualificationRequest) {
         return ResponseEntity.ok(qualificationService.createQualification(qualificationRequest));

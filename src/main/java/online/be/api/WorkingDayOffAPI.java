@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @RestController
 @RequestMapping("/api/working-day-off")
 @SecurityRequirement(name = "api")
@@ -45,5 +47,10 @@ public class WorkingDayOffAPI {
     @GetMapping("/slot/{id}")
     public ResponseEntity getWorkingDayOffBySlotId(@PathVariable long id) {
         return ResponseEntity.ok(workingDayOffService.getWorkingDayOffBySlotId(id));
+    }
+
+    @GetMapping("/dentist/{id}/day-off/{date}")
+    public ResponseEntity getByDentistAndDayOff(@PathVariable long id, @PathVariable LocalDate date) {
+        return ResponseEntity.ok(workingDayOffService.getByDentistAndDayOff(id, date));
     }
 }
