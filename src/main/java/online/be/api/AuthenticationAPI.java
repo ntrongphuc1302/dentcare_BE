@@ -44,7 +44,8 @@ public class AuthenticationAPI {
 
 
     @PostMapping("register-by-admin") // /api/register
-    @PreAuthorize("hasAuthority('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('MANAGER')")
+//    @PreAuthorize("hasAuthority('MANAGER')")
     public ResponseEntity register(@RequestBody AdminRegisterRequest adminRegisterRequest) {
         // account đã add xuống db
         Account account = authenticationService.registerAdmin(adminRegisterRequest);
