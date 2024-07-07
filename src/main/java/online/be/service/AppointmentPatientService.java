@@ -7,12 +7,15 @@ import online.be.entity.Patient;
 import online.be.enums.CheckInStatus;
 import online.be.enums.Role;
 import online.be.enums.Status;
+import online.be.exception.BadRequestException;
 import online.be.exception.DuplicateException;
 import online.be.exception.InvalidRoleException;
 import online.be.exception.NotFoundException;
+import online.be.model.EmailDetail;
 import online.be.model.request.AppointmentRequest;
 import online.be.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -45,12 +48,21 @@ public class AppointmentPatientService {
     @Autowired
     ClinicRepository clinicRepository;
 
+    @Autowired
+    TokenService tokenService;
+    @Autowired
+    EmailService emailService;
+
     public List<AppointmentPatient> getAllAppointment() {
-        return appointmentPatientRepository.findAll();
+        List<AppointmentPatient> appointmentPatients = appointmentPatientRepository.findAll();
+        appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate, Comparator.reverseOrder()));
+        return appointmentPatients;
     }
 
     public List<AppointmentPatient> getAppointmentsByPatientId(long patientId) {
-        return appointmentPatientRepository.findByPatientId(patientId);
+        List<AppointmentPatient> appointmentPatients = appointmentPatientRepository.findByPatientId(patientId);
+        appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate, Comparator.reverseOrder()));
+        return appointmentPatients;
     }
 
     public AppointmentPatient getAppointmentById(long id) {
@@ -67,21 +79,27 @@ public class AppointmentPatientService {
         if(patient == null) {
             throw new NotFoundException("Cannot found this patient");
         }
-        return appointmentPatientRepository.
+        List<AppointmentPatient> appointmentPatients= appointmentPatientRepository.
                 findByPatientIdAndDentistServices_AccountIdAndDate(patientId, denId, date);
+        appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate, Comparator.reverseOrder()));
+        return appointmentPatients;
     }
 
     public List<AppointmentPatient> getAppointmentsDentistId(long id) {
         Account account = accountRepository.findById(id);
         if (account.getRole() == Role.DENTIST) {
-            return appointmentPatientRepository.findByDentistServices_AccountId(id);
+            List<AppointmentPatient> appointmentPatients= appointmentPatientRepository.findByDentistServices_AccountId(id);
+            appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate, Comparator.reverseOrder()));
+            return appointmentPatients;
         } else {
             throw new InvalidRoleException("The " + account.getRole() + " is invalid");
         }
     }
 
     public List<AppointmentPatient> getAppointmentsByPatientPhone(String phone) {
-        return appointmentPatientRepository.findByPatient_PhoneNumber(phone);
+        List<AppointmentPatient> appointmentPatients = appointmentPatientRepository.findByPatient_PhoneNumber(phone);
+        appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate, Comparator.reverseOrder()));
+        return appointmentPatients;
     }
 
     public AppointmentPatient createAppointment(AppointmentRequest appointmentRequest) {
@@ -102,10 +120,60 @@ public class AppointmentPatientService {
             appointment.setDate(appointmentRequest.getDate());
             appointment.setStatus(CheckInStatus.PROCESSING);
             appointment.setAccount2(account);
+
+            sendEmailAfterCompleted(account);
             return appointmentPatientRepository.save(appointment);
         } else {
             throw new DuplicateException("These id have been existed");
         }
+    }
+
+    // thong bao cho nguoi dat lich ngay sau khi hoan thanh dat lich
+    public void sendEmailAfterCompleted(Account account) {
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setRecipient(account.getEmail());
+//        emailDetail.setFullName(account.getFullName());
+        emailDetail.setSubject("Successful Appointment for account " + account.getEmail() + "!");
+        emailDetail.setMsgBody("Chuc mung ban sap di kham rang!");
+        emailDetail.setButtonValue("View Web");
+        emailDetail.setLink("http://dentcare.website");
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                emailService.sendMailTemplate(emailDetail);
+            }
+        };
+        new Thread(r).start();
+    }
+
+    //thong bao truoc 1 ngay
+    @Scheduled(cron = "0 0 0 * * ?") //dem nguoc luc 12h dem moi ngay
+    public void checkAndNotifyAppointment(){
+        List<AppointmentPatient> accList = appointmentPatientRepository.findByStatus(CheckInStatus.PROCESSING);
+        for(AppointmentPatient customer : accList){
+            if(customer.getDate() != null && customer.getDate().isBefore(LocalDate.now())){
+                Account cus = customer.getAccount2();
+                sendEmailBeforeAppointmentDateOneDay(cus);
+            }
+        }
+    }
+
+    public void sendEmailBeforeAppointmentDateOneDay(Account account) {
+        EmailDetail emailDetail = new EmailDetail();
+        emailDetail.setRecipient(account.getEmail());
+//        emailDetail.setFullName(account.getFullName());
+        emailDetail.setSubject("Tomorrow appointment for account " + account.getEmail() + "!");
+        emailDetail.setMsgBody("Chuc mung ban sap di kham rang!");
+        emailDetail.setButtonValue("CHECK NOW");
+        emailDetail.setLink("http://dentcare.website");
+//        emailService.sendMailTemplate(emailDetail);
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                emailService.sendMailTemplate(emailDetail);
+            }
+        };
+        new Thread(r).start();
     }
 
 //    private boolean checkAppointmentAvailable(long id){
@@ -172,7 +240,9 @@ public class AppointmentPatientService {
         if (patientRepository.findById(id) == null){
             throw new NotFoundException("Patient not found");
         }
-        return appointmentPatientRepository.findByPatientIdAndDate(id, date);
+        List<AppointmentPatient> appointmentPatients = appointmentPatientRepository.findByPatientIdAndDate(id, date);
+        appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate, Comparator.reverseOrder()));
+        return appointmentPatients;
     }
 
     public List<AppointmentPatient> getAppointmentsByDate(LocalDate date) {
@@ -182,13 +252,17 @@ public class AppointmentPatientService {
         } catch (Exception e) {
             throw new RuntimeException("Date is invalid");
         }
-        return appointmentPatientRepository.findByDate(date);
+        List<AppointmentPatient> appointmentPatients = appointmentPatientRepository.findByDate(date);
+        appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate, Comparator.reverseOrder()));
+        return appointmentPatients;
     }
 
     public List<AppointmentPatient> getAppointmentsByStaffId(long id) {
         Account account = accountRepository.findById(id);
         if (account.getRole() == Role.STAFF) {
-            return appointmentPatientRepository.findByAccountId(id);
+            List<AppointmentPatient> appointmentPatients = appointmentPatientRepository.findByAccountId(id);
+            appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate, Comparator.reverseOrder()));
+            return appointmentPatients;
         } else {
             throw new InvalidRoleException("The " + account.getRole() + " is invalid");
         }
@@ -208,29 +282,39 @@ public class AppointmentPatientService {
     }
 
     public List<AppointmentPatient> getAppointmentsByDateBetween(LocalDate startDate, LocalDate endDate) {
-        return appointmentPatientRepository.findByDateBetween(startDate, endDate);
+        List<AppointmentPatient> appointmentPatients= appointmentPatientRepository.findByDateBetween(startDate, endDate);
+        appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate, Comparator.reverseOrder()));
+        return appointmentPatients;
     }
 
     public List<AppointmentPatient> getAppointmentByDateBetweenAndDentistId
             (LocalDate startDate, LocalDate endDate, long id) {
         List<AppointmentPatient> appointmentPatients= appointmentPatientRepository.findByDateBetweenAndDentistServices_AccountId
                 (startDate, endDate, id);
-        appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate));
+        appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate, Comparator.reverseOrder()));
         return appointmentPatients;
     }
 
     public List<AppointmentPatient> getAppointmentByDateBetweenAndClinicId
             (LocalDate startDate, LocalDate endDate, long id) {
-        return appointmentPatientRepository.findByDateBetweenAndDentistServices_Account_DentalClinicId
+        List<AppointmentPatient> appointmentPatients = appointmentPatientRepository.findByDateBetweenAndDentistServices_Account_DentalClinicId
                 (startDate, endDate, id);
+        appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate, Comparator.reverseOrder()));
+        return appointmentPatients;
     }
 
     public List<AppointmentPatient> getAppointmentByDentalClinicId(long id) {
-        DentalClinic clinic = clinicRepository.findById(id).get();
-        if (clinic != null) {
-            return appointmentPatientRepository.findByDentistServices_Account_DentalClinicId(id);
-        } else {
-            throw new NotFoundException("Clinic not found");
-        }
+        DentalClinic clinic = clinicRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("Clinic not found with id " + id));;
+
+        return appointmentPatientRepository.findByDentistServices_Account_DentalClinicId(id);
+    }
+
+    public List<AppointmentPatient> getAppointmentByDentalClinicIdAndDate(long id, LocalDate date) {
+        DentalClinic clinic = clinicRepository.findById(id).
+                orElseThrow(() -> new NotFoundException("Clinic not found with id " + id));;
+        return appointmentPatientRepository.
+                    findByDentistServices_Account_DentalClinicIdAndDate(id, date);
+
     }
 }

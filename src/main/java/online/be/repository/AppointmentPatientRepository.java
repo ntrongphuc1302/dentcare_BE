@@ -3,6 +3,7 @@ package online.be.repository;
 import online.be.entity.AppointmentPatient;
 import online.be.entity.Patient;
 import online.be.entity.Slot;
+import online.be.enums.CheckInStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
@@ -27,5 +28,7 @@ public interface AppointmentPatientRepository extends JpaRepository<AppointmentP
     List<AppointmentPatient> findByDateBetweenAndDentistServices_AccountId(LocalDate startDate, LocalDate endDate, long id);
     List<AppointmentPatient> findByDateBetweenAndDentistServices_Account_DentalClinicId
             (LocalDate startDate, LocalDate endDate, long id);
+    List<AppointmentPatient> findByDentistServices_Account_DentalClinicIdAndDate(long id, LocalDate date);
+    List<AppointmentPatient> findByStatus(CheckInStatus status);
 
 }
