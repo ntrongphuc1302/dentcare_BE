@@ -28,7 +28,7 @@ public class AccountService {
     }
 
     public List<Account> getAccountByRole(Role role) {
-        return accountRepository.findAccountsByRole(role);
+        return accountRepository.findAccountsByRoleAndStatus(role, Status.ACTIVE);
     }
 
     public List<Account> getAccountByRoleAndClinicAndService(Role role, long clinicId, long serviceId) {
@@ -79,7 +79,16 @@ public class AccountService {
         } else {
             throw new NotFoundException("Account not found with id " + accountRequest.getId());
         }
+    }
 
+    public void deleteAccountById(long id) {
+        Account account =  accountRepository.findById(id);
+        if (account != null) { //check existed account
+            account.setStatus(Status.INACTIVE);
+            accountRepository.save(account);
+        } else {
+            throw new NotFoundException("Account not found with id " + id);
+        }
     }
 
 }

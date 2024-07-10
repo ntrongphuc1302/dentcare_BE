@@ -62,4 +62,10 @@ public class AccountManagementAPI {
         accountService.deleteAccount(accountRequest);
         return ResponseEntity.ok("Account " + accountRequest.getId() + "has been deleted");
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity deleteAccountById(@PathVariable long id) {
+        accountService.deleteAccountById(id);
+        return ResponseEntity.ok("Account " + id + " has been deleted");
+    }
 }
