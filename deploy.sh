@@ -2,9 +2,9 @@ echo "Building app..."
 ./mvnw clean package
 
 echo "Deploy files to server..."
-scp -r target/be.jar root@68.183.183.140:/var/www/be/
+scp -r target/be.jar root@165.232.79.59:/var/www/be/
 
-ssh root@68.183.183.140 <<EOF
+ssh root@165.232.79.59 <<EOF
 pid=\$(sudo lsof -t -i :8080)
 
 if [ -z "\$pid" ]; then

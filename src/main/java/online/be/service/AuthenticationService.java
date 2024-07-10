@@ -147,7 +147,12 @@ public class AuthenticationService implements UserDetailsService {
                 account.setFullName(firebaseToken.getName());
                 account.setEmail(firebaseToken.getEmail());
                 account.setRole(Role.CUSTOMER);
+                account.setStatus(Status.ACTIVE); // dăđặt trạng thái
                 account = authenticationRepository.save(account);
+            }
+
+            if(account.getStatus() == Status.INACTIVE) {
+                throw new BadRequestException("Your account is locked \n Please contact with support");
             }
             accountResponse.setFullName(account.getFullName());
             accountResponse.setEmail(account.getEmail());
@@ -175,6 +180,9 @@ public class AuthenticationService implements UserDetailsService {
         Account account = authenticationRepository.findAccountByEmail(loginRequest.getEmail());
         String token = tokenService.generateToken(account);
 
+        if(account.getStatus() == Status.INACTIVE) {
+            throw new BadRequestException("Your account is locked \nPlease contact with support");
+        }
         AccountResponse accountResponse = new AccountResponse();
         accountResponse.setPhone(account.getPhone());
         accountResponse.setToken(token);

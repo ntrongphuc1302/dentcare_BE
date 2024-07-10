@@ -31,6 +31,8 @@ import java.util.stream.Collectors;
 
 @Service
 public class SlotService {
+    // Define a DateTimeFormatter for "h a" time format
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("h a");
 
     @Autowired
     private SlotRepository slotRepository;
@@ -64,8 +66,7 @@ public class SlotService {
 //        return slotEndTime.isBefore(LocalDateTime.now());
 //    }
 
-    // Define a DateTimeFormatter for "h a" time format
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("h a");
+
 
 
     // Check if the slot date and time has already passed
@@ -117,21 +118,23 @@ public class SlotService {
 
         for(Slot slot: listSlot){
            SlotResponse slotResponse = mapperSlot(slot);
-                   if(!listOffDate.isEmpty()){
-                       for(Slot offdate: listOffDate){
-                           if(slot.getId() == offdate.getId()){
-                               slotResponse.setAvailable(false);
-                           }
-                       }
+
+           if(dayOff.equals(LocalDate.now()) || dayOff.isBefore(LocalDate.now())){
+                slotResponse.setAvailable(!isSlotExpired(dayOff, slot.getEndTime()));
+           }
+           if(!listOffDate.isEmpty()){
+               for(Slot offdate: listOffDate){
+                   if(slot.getId() == offdate.getId()){
+                       slotResponse.setAvailable(false);
                    }
-                    for (SlotIdCountDTO slotIdCountDTO: list){
-                        if(slot.getId() == slotIdCountDTO.getSlotId() && slotIdCountDTO.getCount() >= 3){
-                            slotResponse.setAvailable(false);
-                        }
-                    }
-                    if(dayOff.equals(LocalDate.now()) || dayOff.isBefore(LocalDate.now())){
-                        slotResponse.setAvailable(!isSlotExpired(dayOff, slot.getEndTime()));
-                    }
+               }
+           }
+           for (SlotIdCountDTO slotIdCountDTO: list){
+                if(slot.getId() == slotIdCountDTO.getSlotId() && slotIdCountDTO.getCount() >= 3){
+                    slotResponse.setAvailable(false);
+                }
+           }
+
            slotResponses.add(slotResponse);
         }
 
