@@ -36,6 +36,7 @@ public class ServiceDetailService {
         service.setPrice(serviceDetailRequest.getPrice());
         service.setDescription(serviceDetailRequest.getDescription());
         service.setServiceDetailEnum(ServiceDetailEnum.ACTIVE);
+        service.setUrl(serviceDetailRequest.getUrl());
         try {
             return serviceDetailRepository.save(service);
         } catch (Exception e) {
@@ -50,6 +51,7 @@ public class ServiceDetailService {
             service.setPrice(serviceDetailUpdateRequest.getPrice());
             service.setDescription(serviceDetailUpdateRequest.getDescription());
             service.setServiceDetailEnum(serviceDetailUpdateRequest.getServiceDetailEnum());
+            service.setUrl(serviceDetailUpdateRequest.getUrl()); // url image
             return serviceDetailRepository.save(service);
         } else {
             throw new NotFoundException("Dentist Service not found!");

@@ -46,6 +46,8 @@ public class Account implements UserDetails {
     @Enumerated(EnumType.STRING)
     Status status;
 
+    String url;
+
     @ManyToOne
     @JoinColumn(name = "dental_clinic_id")
     private DentalClinic dentalClinic;

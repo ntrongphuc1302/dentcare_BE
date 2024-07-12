@@ -36,6 +36,8 @@ public class DentalClinic {
     @Enumerated(EnumType.STRING)
     ClinicEnum clinicEnum;
 
+    String url;
+
     @JsonIgnore
     @OneToMany(mappedBy = "dentalClinic")
     private List<Account> accounts;

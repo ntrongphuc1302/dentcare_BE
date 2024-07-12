@@ -14,6 +14,7 @@ public class ServiceDetailUpdateRequest {
     String name;
     String price;
     String description;
+    String url;
     @Enumerated(EnumType.STRING)
     ServiceDetailEnum serviceDetailEnum;
 }

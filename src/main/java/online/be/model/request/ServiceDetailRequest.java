@@ -9,4 +9,5 @@ public class ServiceDetailRequest {
     String name;
     String price;
     String description;
+    String url;
 }

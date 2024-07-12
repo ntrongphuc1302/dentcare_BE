@@ -97,6 +97,7 @@ public class AuthenticationService implements UserDetailsService {
         account.setEmail(adminRegisterRequest.getEmail());
         account.setFullName(adminRegisterRequest.getFullName());
         account.setStatus(Status.ACTIVE);
+        account.setUrl(adminRegisterRequest.getUrl()); // url image
         // Gán Clinic ID cho tài khoản từ yêu cầu đăng ký
         DentalClinic clinic = null;
         Room room = null;

@@ -58,6 +58,7 @@ public class AccountService {
             account.setFullName(accountRequest.getFullName());
             account.setPhone(accountRequest.getPhone());
             account.setRole(accountRequest.getRole());
+            account.setUrl(accountRequest.getUrl()); // url image
             DentalClinic clinic = null;
             if (accountRequest.getRole() != Role.ADMIN) {
                 clinic = clinicRepository.findById(accountRequest.getClinicID()).

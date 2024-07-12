@@ -63,6 +63,7 @@ public class ClinicService {
         clinic.setOpenHours(clinicRequest.getOpenHours());
         clinic.setCloseHours(clinicRequest.getCloseHours());
         clinic.setClinicEnum(ClinicEnum.ACTIVE);
+        clinic.setUrl(clinicRequest.getUrl());
         try {
             return clinicRepository.save(clinic);
         } catch (Exception e) {
@@ -79,6 +80,7 @@ public class ClinicService {
             clinic.setAddress(clinicDetails.getAddress());
             clinic.setOpenHours(clinicDetails.getOpenHours());
             clinic.setCloseHours(clinicDetails.getCloseHours());
+            clinic.setUrl(clinicDetails.getUrl()); // url image
             return clinicRepository.save(clinic);
         } else {
             throw new NotFoundException("Clinic not found with id " + clinicDetails.getId());

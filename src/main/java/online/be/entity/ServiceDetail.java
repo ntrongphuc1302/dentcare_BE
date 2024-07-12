@@ -32,6 +32,8 @@ public class ServiceDetail {
     @Enumerated(EnumType.STRING)
     ServiceDetailEnum serviceDetailEnum;
 
+    String url;
+
     @JsonIgnore
     @OneToMany(mappedBy = "serviceDetail")
     List<DentistServices> dentistServicesLists;
