@@ -10,4 +10,5 @@ public class ClinicRequest {
     String address;
     String openHours;
     String closeHours;
+    String url;
 }

@@ -10,6 +10,7 @@ public class AccountRequest {
     long id;
     String fullName;
     String phone;
+    String url;
     @Enumerated(EnumType.STRING)
     Role role;
     long clinicID;

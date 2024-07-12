@@ -14,6 +14,7 @@ public class ClinicByManagerRequest {
     String address;
     String openHours;
     String closeHours;
+    String url;
     @Enumerated(EnumType.STRING)
     ClinicEnum clinicEnum;
 }
