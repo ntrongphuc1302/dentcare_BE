@@ -50,7 +50,7 @@ public class ServiceDetailService {
             service.setName(serviceDetailUpdateRequest.getName());
             service.setPrice(serviceDetailUpdateRequest.getPrice());
             service.setDescription(serviceDetailUpdateRequest.getDescription());
-            service.setServiceDetailEnum(serviceDetailUpdateRequest.getServiceDetailEnum());
+//            service.setServiceDetailEnum(serviceDetailUpdateRequest.getServiceDetailEnum());
             service.setUrl(serviceDetailUpdateRequest.getUrl()); // url image
             return serviceDetailRepository.save(service);
         } else {

@@ -19,9 +19,7 @@ import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -72,11 +70,14 @@ public class SlotService {
     // Check if the slot date and time has already passed
     private boolean isSlotExpired(LocalDate slotDate, String slotEndTime) {
         try {
+            ZoneId hcmZoneId = ZoneId.of("Asia/Ho_Chi_Minh");
+            ZonedDateTime hcmTime = ZonedDateTime.now(hcmZoneId);
+            LocalDateTime localDateTime = hcmTime.toLocalDateTime();
+
             LocalTime slotTime = LocalTime.parse(slotEndTime, TIME_FORMATTER);
             LocalDateTime slotDateTime = LocalDateTime.of(slotDate, slotTime);
-            LocalDateTime now = LocalDateTime.now();
             LocalDateTime expiryTime = slotDateTime.minusHours(1);
-            return now.isAfter(expiryTime);
+            return localDateTime.isAfter(expiryTime);
         } catch (DateTimeParseException e) {
             e.printStackTrace();
             // Handle the exception as needed
@@ -99,6 +100,11 @@ public class SlotService {
 
     public List<SlotResponse> getAvailableSlots(long dentistId, LocalDate dayOff) {
 
+        ZoneId hcmZoneId = ZoneId.of("Asia/Ho_Chi_Minh");
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(hcmZoneId);
+        LocalDate localDateTimeNow = zonedDateTime.toLocalDate();
+        System.out.println(localDateTimeNow);
+
         List<Slot> listSlot = slotRepository.findAll();
 
         List<SlotResponse> slotResponses =  new ArrayList<>();
@@ -119,7 +125,7 @@ public class SlotService {
         for(Slot slot: listSlot){
            SlotResponse slotResponse = mapperSlot(slot);
 
-           if(dayOff.equals(LocalDate.now()) || dayOff.isBefore(LocalDate.now())){
+           if(dayOff.equals(localDateTimeNow) || dayOff.isBefore(localDateTimeNow)){
                 slotResponse.setAvailable(!isSlotExpired(dayOff, slot.getEndTime()));
            }
            if(!listOffDate.isEmpty()){

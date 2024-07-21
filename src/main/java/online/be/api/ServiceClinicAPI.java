@@ -36,6 +36,12 @@ public class ServiceClinicAPI {
     @PostMapping
     public ResponseEntity enrollServiceInClinic(@RequestBody ServiceClinicRequest serviceClinicRequest) {
         serviceClinicService.enrollServiceInClinic(serviceClinicRequest);
-        return ResponseEntity.ok("Enroll successfull");
+        return ResponseEntity.ok("Enroll successful");
+    }
+
+    @DeleteMapping
+    public  ResponseEntity removeServiceInClinic(@RequestBody ServiceClinicRequest serviceClinicRequest) {
+        serviceClinicService.removeServiceInClinic(serviceClinicRequest);
+        return ResponseEntity.ok("Remove successful");
     }
 }
