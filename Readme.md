@@ -147,4 +147,9 @@
 
 - The dental clinic system is a web-based booking system for dental clinic services is a software application designed to streamline the process of scheduling and managing dental appointments. This system replaces traditional, manual appointment scheduling methods, providing both patients and clinic staff with a user-friendly online interface. 
 - The system is compatible with various web browsers (Chrome, Firefox, Safari, Edge) and their different versions. All patient data, especially sensitive information, are encrypted during transmission and storage. The system has intuitive and easy to navigate user interface. The appointment availability is synchronised in real-time across all devices and platforms which enhance booking experience and all the information is reflected and stored in a secure database.
+
+## Source code
+- **Frontend**: [Dentcare Frontend Repository](https://github.com/tranh0anghuan/Dent-Care-React)
+- **Backend**: [Dentcare Backend Repository](https://github.com/ntrongphuc1302/dentcare_BE.git)
+
 <p align="right"><a href="#Top">Back to top</a></p>
