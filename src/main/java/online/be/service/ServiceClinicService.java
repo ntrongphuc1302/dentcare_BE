@@ -67,4 +67,22 @@ public class ServiceClinicService {
         serviceDetailRepository.save(serviceDetail);
         clinicRepository.save(clinic);
     }
+
+    public void removeServiceInClinic2(long sId, long cId) {
+        ServiceDetail serviceDetail = serviceDetailRepository.findById(sId);
+
+        DentalClinic clinic = clinicRepository.findById(cId).
+                orElseThrow(() -> new NotFoundException("Clinic not found"));
+
+        if (serviceDetail != null) {
+            serviceDetail.getDentalClinics().remove(clinic);
+        } else {
+            throw new NotFoundException("Service not found");
+        }
+
+        clinic.getServiceDetails().remove(serviceDetail);
+
+        serviceDetailRepository.save(serviceDetail);
+        clinicRepository.save(clinic);
+    }
 }
