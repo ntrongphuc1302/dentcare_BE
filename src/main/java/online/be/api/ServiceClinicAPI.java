@@ -44,4 +44,10 @@ public class ServiceClinicAPI {
         serviceClinicService.removeServiceInClinic(serviceClinicRequest);
         return ResponseEntity.ok("Remove successful");
     }
+
+    @DeleteMapping("/serviceId/{sId}/clinicId/{cId}")
+    public ResponseEntity removeServiceInClinic2(@PathVariable long sId, @PathVariable long cId) {
+        serviceClinicService.removeServiceInClinic2(sId, cId);
+        return ResponseEntity.ok("Remove successfully");
+    }
 }

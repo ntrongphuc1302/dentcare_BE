@@ -111,7 +111,11 @@ public class AppointmentPatientService {
         Account account = authenticationService.getCurrentAccount();
         if (appointmentPatient == null) {
             AppointmentPatient appointment = new AppointmentPatient();
+
             var patient = patientRepository.findById(appointmentRequest.getPatientId());
+            if (patient == null) {
+                throw new NotFoundException("Patient cannot null");
+            }
             appointment.setPatient(patient);
             var slot = slotRepository.findById(appointmentRequest.getSlotId());
             appointment.setSlot(slot);
@@ -134,7 +138,7 @@ public class AppointmentPatientService {
         emailDetail.setRecipient(account.getEmail());
 //        emailDetail.setFullName(account.getFullName());
         emailDetail.setSubject("Successful Appointment for account " + account.getEmail() + "!");
-        emailDetail.setMsgBody("Chuc mung ban sap di kham rang!");
+        emailDetail.setMsgBody("Successful Appointment");
         emailDetail.setButtonValue("View Web");
         emailDetail.setLink("http://dentcare.website");
         Runnable r = new Runnable() {
@@ -163,7 +167,7 @@ public class AppointmentPatientService {
         emailDetail.setRecipient(account.getEmail());
 //        emailDetail.setFullName(account.getFullName());
         emailDetail.setSubject("Tomorrow appointment for account " + account.getEmail() + "!");
-        emailDetail.setMsgBody("Chuc mung ban sap di kham rang!");
+        emailDetail.setMsgBody("Tomorrow appointment");
         emailDetail.setButtonValue("CHECK NOW");
         emailDetail.setLink("http://dentcare.website");
 //        emailService.sendMailTemplate(emailDetail);
