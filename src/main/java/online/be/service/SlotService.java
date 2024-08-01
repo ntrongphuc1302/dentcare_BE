@@ -103,7 +103,7 @@ public class SlotService {
         ZoneId hcmZoneId = ZoneId.of("Asia/Ho_Chi_Minh");
         ZonedDateTime zonedDateTime = ZonedDateTime.now(hcmZoneId);
         LocalDate localDateTimeNow = zonedDateTime.toLocalDate();
-        System.out.println(localDateTimeNow);
+//        System.out.println(localDateTimeNow);
 
         List<Slot> listSlot = slotRepository.findAll();
 
@@ -121,13 +121,25 @@ public class SlotService {
 
         List<Slot> listOffDate = slotRepository.findUnavailableSlotsExcluding(excludedSlotIds);
 
+        // Kiểm tra xem có rơi vào ngày CN không
+        if (dayOff.getDayOfWeek() == DayOfWeek.SUNDAY || dayOff.getDayOfWeek() == DayOfWeek.SATURDAY) {
+            // Nêu là CN set tat ca thanh false
+            for (Slot slot : listSlot) {
+                SlotResponse slotResponse = mapperSlot(slot);
+                slotResponse.setAvailable(false);
+                slotResponses.add(slotResponse);
+            }
+            return slotResponses;
+        }
 
         for(Slot slot: listSlot){
            SlotResponse slotResponse = mapperSlot(slot);
 
+           //Check if the current time has passed or not
            if(dayOff.equals(localDateTimeNow) || dayOff.isBefore(localDateTimeNow)){
                 slotResponse.setAvailable(!isSlotExpired(dayOff, slot.getEndTime()));
            }
+           //check day off of dentist
            if(!listOffDate.isEmpty()){
                for(Slot offdate: listOffDate){
                    if(slot.getId() == offdate.getId()){
@@ -135,6 +147,7 @@ public class SlotService {
                    }
                }
            }
+           // check the limited appointment
            for (SlotIdCountDTO slotIdCountDTO: list){
                 if(slot.getId() == slotIdCountDTO.getSlotId() && slotIdCountDTO.getCount() >= 3){
                     slotResponse.setAvailable(false);
