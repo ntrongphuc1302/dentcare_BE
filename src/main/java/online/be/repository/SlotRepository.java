@@ -19,7 +19,10 @@ public interface SlotRepository extends JpaRepository<Slot, Long> {
 
     Slot findSlotByName(String name);
 
-    @Query(value = "select a.slot_id, COUNT(a.slot_id) from appointment_patient a join dentist_services d ON d.id = a.dentist_services_id where d.dentist_id = :dentistId  and a.date = :date GROUP BY a.slot_id",nativeQuery = true)
+    @Query(value = "select a.slot_id, COUNT(a.slot_id) " +
+            "from appointment_patient a " +
+            "join dentist_services d ON d.id = a.dentist_services_id " +
+            "where d.dentist_id = :dentistId  and a.date = :date GROUP BY a.slot_id",nativeQuery = true)
     List<Object[]> findCountSlot(@Param("dentistId") long dentistId, @Param("date") LocalDate date);
 
 

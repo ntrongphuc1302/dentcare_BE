@@ -61,7 +61,7 @@ public class AppointmentPatientService {
 
     public List<AppointmentPatient> getAppointmentsByPatientId(long patientId) {
         List<AppointmentPatient> appointmentPatients = appointmentPatientRepository.findByPatientId(patientId);
-        appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate, Comparator.reverseOrder()));
+//        appointmentPatients.sort(Comparator.comparing(AppointmentPatient::getDate, Comparator.reverseOrder()));
         return appointmentPatients;
     }
 
@@ -196,7 +196,6 @@ public class AppointmentPatientService {
 //        return result;
 //    }
 
-
     public AppointmentPatient updateAppointment(AppointmentRequest appointmentRequest) {
 //        AppointmentPatient appointmentPatient = appointmentPatientRepository.
 //                findBySlotIdAndPatientId(appointmentRequest.getSlotId(), appointmentRequest.getPatientId());
@@ -282,7 +281,6 @@ public class AppointmentPatientService {
         appointmentPatient.setAccount(staff);
 
         return appointmentPatientRepository.save(appointmentPatient);
-
     }
 
     public List<AppointmentPatient> getAppointmentsByDateBetween(LocalDate startDate, LocalDate endDate) {

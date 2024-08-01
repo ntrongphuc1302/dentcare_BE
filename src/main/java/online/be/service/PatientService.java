@@ -18,13 +18,11 @@ import java.util.Optional;
 @Service
 public class PatientService {
     @Autowired
-    private PatientRepository patientRepository;
-
-    @Autowired
     AuthenticationRepository authenticationRepository;
-
     @Autowired
     AuthenticationService authenticationService;
+    @Autowired
+    private PatientRepository patientRepository;
 
     public List<Patient> getAllPatients() {
         return patientRepository.findAllByPatientEnum(PatientEnum.ACTIVE);
@@ -44,20 +42,21 @@ public class PatientService {
 
     public Patient createPatient(PatientRequest patientRequest) {
 //        Account account = authenticationRepository.findById(patientRequest.getAccountId()).get();
+        Patient checkPatient = patientRepository.findByNameAndAgeAndGenderAndAddress(patientRequest.getName(),
+                patientRequest.getAge(), patientRequest.getGender(), patientRequest.getAddress());
         Account account = authenticationService.getCurrentAccount();
-        Patient patient = new Patient();
-        patient.setName(patientRequest.getName());
-        patient.setAge(patientRequest.getAge());
-        patient.setGender(patientRequest.getGender());
-        patient.setAddress(patientRequest.getAddress());
-        patient.setPhoneNumber(patientRequest.getPhoneNumber());
-        patient.setEmail(patientRequest.getEmail());
-        patient.setPatientEnum(PatientEnum.ACTIVE);
-        patient.setAccount(account);
-
-        try {
+        if (checkPatient == null) {
+            Patient patient = new Patient();
+            patient.setName(patientRequest.getName());
+            patient.setAge(patientRequest.getAge());
+            patient.setGender(patientRequest.getGender());
+            patient.setAddress(patientRequest.getAddress());
+            patient.setPhoneNumber(patientRequest.getPhoneNumber());
+            patient.setEmail(patientRequest.getEmail());
+            patient.setPatientEnum(PatientEnum.ACTIVE);
+            patient.setAccount(account);
             return patientRepository.save(patient);
-        } catch (Exception e) {
+        } else {
             throw new DuplicateException("Patient already exists!");
         }
     }
